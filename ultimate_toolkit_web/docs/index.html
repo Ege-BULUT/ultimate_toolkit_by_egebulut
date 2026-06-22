@@ -191,11 +191,11 @@
       <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">&#9776;</button>
       <a href="/" class="nav-logo"><div class="nav-logo-mark">UT</div><span>Ultimate Toolkit</span></a>
       <div class="nav-divider"></div>
-      <span class="nav-version" id="navVersion">v0.1.0</span>
+      <span class="nav-version" id="navVersion">v1.0.0</span>
       <div class="nav-spacer"></div>
       <div class="nav-links">
         <a href="/">Home</a>
-        <a href="/docs/v0.1.0">Docs</a>
+        <a href="/docs/v1.0.0">Docs</a>
         <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut" target="_blank" rel="noopener">GitHub</a>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"><span id="themeIcon">&#9681;</span></button>
       </div>
@@ -276,7 +276,9 @@
     // ─── Search ───────────────────────────────────────────────────
     function loadSearchIndex() {
       if (searchIndex) return Promise.resolve(searchIndex);
-      return fetch(CONTENT_BASE + '/v1.0.0/search-index.json')
+      var info = parseDocURL();
+      var verPath = info.version || 'v1.0.0';
+      return fetch(CONTENT_BASE + '/' + verPath + '/search-index.json')
         .then(function(r) { return r.json(); })
         .then(function(data) { searchIndex = data; return data; })
         .catch(function() { searchIndex = []; return []; });
@@ -468,8 +470,10 @@
 
     // ─── Init ─────────────────────────────────────────────────────
     async function init() {
+      var info = parseDocURL();
+      var verPath = info.version || 'v1.0.0';
       try {
-        var res = await fetch(CONTENT_BASE + '/v1.0.0/index.json');
+        var res = await fetch(CONTENT_BASE + '/' + verPath + '/index.json');
         manifest = await res.json();
       } catch (err) {
         document.getElementById('content').innerHTML = '<div class="content-error"><h2>Failed to load documentation</h2><p>Could not load the documentation index. Please try again later.</p></div>';
