@@ -1,7 +1,7 @@
 {
   "identifier": "default",
-  "description": "Default capabilities for the main window",
-  "windows": ["main"],
+  "description": "Capabilities for main and floating windows",
+  "windows": ["main", "floating-*", "floating-toolbar"],
   "permissions": [
     "core:default",
     "updater:default",

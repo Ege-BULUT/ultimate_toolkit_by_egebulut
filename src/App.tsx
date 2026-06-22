@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Sidebar, type Page } from "./components/Sidebar";
 import { PluginManager } from "./plugins/core/PluginManager";
 import { SettingsPanel } from "./components/SettingsPanel";
@@ -15,6 +15,7 @@ import { Tooltip } from "./components/Tooltip";
 import { ErrorBoundary } from "./plugins/core/ErrorBoundary";
 import { Welcome } from "./components/Welcome";
 import type { Theme } from "./types";
+import { isTauri } from "./utils/tauri";
 
 PluginRegistry.register(new OCRPlugin());
 PluginRegistry.register(new AIChatPlugin());
@@ -31,6 +32,18 @@ const App: React.FC = () => {
 
   const [activePage, setActivePage] = useState<Page>("plugins");
   const [floatingUIs, setFloatingUIs] = useState<Set<string>>(new Set());
+
+  // Spawn the always-on-top floating toolbar on app start (Tauri only)
+  useEffect(() => {
+    if (isTauri()) {
+      (async () => {
+        try {
+          const { invoke } = await import("@tauri-apps/api/core");
+          await invoke("show_floating_toolbar");
+        } catch {}
+      })();
+    }
+  }, []);
 
   // Derive active plugins set
   const activePlugins = new Set(
@@ -80,6 +93,15 @@ const App: React.FC = () => {
       next.delete(id);
       return next;
     });
+  }, []);
+
+  const handlePopOut = useCallback(async (id: string) => {
+    if (isTauri()) {
+      try {
+        const { invoke } = await import("@tauri-apps/api/core");
+        await invoke("create_floating_window", { pluginId: id });
+      } catch {}
+    }
   }, []);
 
   const handleThemeChange = useCallback(
@@ -149,23 +171,40 @@ const App: React.FC = () => {
               </Tooltip>
 
               {pluginDef?.definition.hasFloatingUI && activePlugins.has(activePage) && (
-                <Tooltip text={floatingUIs.has(activePage) ? "Hide floating window" : "Show floating window"}>
-                  <button
-                    onClick={() => handleToggleFloating(activePage)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium"
-                    style={{
-                      background: floatingUIs.has(activePage)
-                        ? "var(--color-accent)"
-                        : "var(--color-surface-hover)",
-                      color: floatingUIs.has(activePage)
-                        ? "#fff"
-                        : "var(--color-text-primary)",
-                      border: "1px solid var(--color-border)",
-                    }}
-                  >
-                    {floatingUIs.has(activePage) ? "Hide Floating" : "Floating Window"}
-                  </button>
-                </Tooltip>
+                <div className="flex items-center gap-2">
+                  <Tooltip text={floatingUIs.has(activePage) ? "Hide floating window" : "Show floating window"}>
+                    <button
+                      onClick={() => handleToggleFloating(activePage)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                      style={{
+                        background: floatingUIs.has(activePage)
+                          ? "var(--color-accent)"
+                          : "var(--color-surface-hover)",
+                        color: floatingUIs.has(activePage)
+                          ? "#fff"
+                          : "var(--color-text-primary)",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    >
+                      {floatingUIs.has(activePage) ? "Hide Floating" : "Floating Window"}
+                    </button>
+                  </Tooltip>
+                  {isTauri() && (
+                    <Tooltip text="Open in a separate always-on-top window">
+                      <button
+                        onClick={() => handlePopOut(activePage)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                        style={{
+                          background: "transparent",
+                          color: "var(--color-accent)",
+                          border: "1px solid var(--color-accent)",
+                        }}
+                      >
+                        Pop Out ↗
+                      </button>
+                    </Tooltip>
+                  )}
+                </div>
               )}
             </div>
           </div>
