@@ -103,7 +103,7 @@ describe("SettingsPanel", () => {
   it("renders the About section with app name and version", () => {
     render(<SettingsPanel {...defaultProps} />);
     expect(screen.getByText(/Ultimate Toolkit/)).toBeTruthy();
-    expect(screen.getByText(/v0.1.0/)).toBeTruthy();
+    expect(screen.getByText(/v1.0.1/)).toBeTruthy();
     expect(screen.getByText(/Ege Bulut/)).toBeTruthy();
   });
 

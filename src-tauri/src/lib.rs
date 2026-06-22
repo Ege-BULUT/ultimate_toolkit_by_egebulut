@@ -26,6 +26,45 @@ pub struct UpdateCheckResult {
     pub download_url: Option<String>,
 }
 
+// ── Debug Logging ────────────────────────────────────────────
+
+use std::fs::{create_dir_all, OpenOptions};
+use std::io::Write;
+use std::path::PathBuf;
+use chrono::Local;
+
+fn log_path(app: &tauri::AppHandle) -> PathBuf {
+    let mut p = app.path().app_data_dir().unwrap_or_else(|_| PathBuf::from("."));
+    p.push("logs");
+    let _ = create_dir_all(&p);
+    p.push("app.log");
+    p
+}
+
+#[tauri::command]
+fn log_message(app: tauri::AppHandle, level: String, message: String) -> Result<(), String> {
+    let p = log_path(&app);
+    let timestamp = Local::now().format("%Y-%m-%d %H:%M:%S%.3f");
+    let line = format!("[{timestamp}] [{level}] {message}\n");
+    if let Ok(mut f) = OpenOptions::new().create(true).append(true).open(&p) {
+        let _ = f.write_all(line.as_bytes());
+    }
+    Ok(())
+}
+
+#[tauri::command]
+fn get_logs(app: tauri::AppHandle) -> Result<String, String> {
+    let p = log_path(&app);
+    if !p.exists() {
+        return Ok(String::new());
+    }
+    let content = std::fs::read_to_string(&p).map_err(|e| e.to_string())?;
+    // Return last 200 lines
+    let lines: Vec<&str> = content.lines().collect();
+    let tail = lines.len().saturating_sub(200);
+    Ok(lines[tail..].join("\n"))
+}
+
 // ── Floating Window Config ────────────────────────────────────
 
 fn floating_size(plugin_id: &str) -> (f64, f64) {
@@ -158,7 +197,7 @@ async fn check_for_updates() -> Result<UpdateCheckResult, String> {
     }
 
     let release: Release = resp.json().await.map_err(|e| format!("Parse error: {e}"))?;
-    let current = "1.0.0";
+    let current = "1.0.1";
 
     Ok(UpdateCheckResult {
         available: release.tag_name.trim_start_matches('v') != current,
@@ -194,8 +233,10 @@ pub fn run() {
             set_theme,
             set_auto_update,
             toggle_plugin,
-            check_for_updates,
-            create_floating_window,
+    check_for_updates,
+    log_message,
+    get_logs,
+    create_floating_window,
             close_floating_window,
             show_floating_toolbar,
         ])
