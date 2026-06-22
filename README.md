@@ -127,7 +127,7 @@ Release builds are triggered by pushing a `v*` tag — see `.github/workflows/re
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
-**Plugin developers**: Start from the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin), or check out the [Plugin API Docs](https://utoolkit.vercel.app/docs/v0.1.0/plugins/plugin-api).
+**Plugin developers**: Start from the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin), or check out the [Plugin API Docs](https://utoolkit.vercel.app/docs/v1.0.0/plugins/plugin-api).
 
 ---
 
@@ -141,7 +141,7 @@ MIT © [Ege Bulut](https://github.com/egebulut). See [LICENSE](./LICENSE).
 
 - [Website](https://utoolkit.vercel.app)
 - [GitHub](https://github.com/egebulut/ultimate_toolkit_by_egebulut)
-- [Docs](https://utoolkit.vercel.app/docs/v0.1.0)
-- [Plugin API Reference](https://utoolkit.vercel.app/docs/v0.1.0/plugins/plugin-api)
+- [Docs](https://utoolkit.vercel.app/docs/v1.0.0)
+- [Plugin API Reference](https://utoolkit.vercel.app/docs/v1.0.0/plugins/plugin-api)
 - [Plugin Template](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin)
 - [Report Bug](https://github.com/egebulut/ultimate_toolkit_by_egebulut/issues)

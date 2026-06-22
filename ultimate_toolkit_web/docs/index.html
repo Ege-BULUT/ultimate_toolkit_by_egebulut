@@ -230,7 +230,7 @@
     const CONTENT_BASE = '/docs/content';
     let manifest = null;
     let searchIndex = null;
-    let currentVersion = 'v0.1.0';
+    let currentVersion = 'v1.0.0';
     let currentCategory = null;
     let currentPage = null;
 
@@ -276,7 +276,7 @@
     // ─── Search ───────────────────────────────────────────────────
     function loadSearchIndex() {
       if (searchIndex) return Promise.resolve(searchIndex);
-      return fetch(CONTENT_BASE + '/v0.1.0/search-index.json')
+      return fetch(CONTENT_BASE + '/v1.0.0/search-index.json')
         .then(function(r) { return r.json(); })
         .then(function(data) { searchIndex = data; return data; })
         .catch(function() { searchIndex = []; return []; });
@@ -469,7 +469,7 @@
     // ─── Init ─────────────────────────────────────────────────────
     async function init() {
       try {
-        var res = await fetch(CONTENT_BASE + '/v0.1.0/index.json');
+        var res = await fetch(CONTENT_BASE + '/v1.0.0/index.json');
         manifest = await res.json();
       } catch (err) {
         document.getElementById('content').innerHTML = '<div class="content-error"><h2>Failed to load documentation</h2><p>Could not load the documentation index. Please try again later.</p></div>';
