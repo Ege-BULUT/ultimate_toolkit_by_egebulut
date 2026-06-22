@@ -1,6 +1,6 @@
 [package]
 name = "ultimate-toolkit-by-egebulut"
-version = "0.1.0"
+version = "1.0.0"
 description = "Modern open-source Windows utility toolkit"
 authors = ["Ege Bulut"]
 edition = "2021"

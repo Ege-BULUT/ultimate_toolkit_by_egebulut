@@ -3,7 +3,7 @@ mod plugins;
 use plugins::{ai_chat, ocr};
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
-use tauri::State;
+use tauri::{Manager, State};
 
 // ── Shared App State ──────────────────────────────────────────
 
@@ -24,6 +24,76 @@ pub struct UpdateCheckResult {
     pub available: bool,
     pub version: Option<String>,
     pub download_url: Option<String>,
+}
+
+// ── Floating Window Config ────────────────────────────────────
+
+fn floating_size(plugin_id: &str) -> (f64, f64) {
+    match plugin_id {
+        "ocr" => (440.0, 600.0),
+        "ai_chat" => (420.0, 580.0),
+        _ => (400.0, 500.0),
+    }
+}
+
+#[tauri::command]
+fn create_floating_window(app: tauri::AppHandle, plugin_id: String) -> Result<(), String> {
+    let label = format!("floating-{plugin_id}");
+    if app.get_webview_window(&label).is_some() {
+        // Already open — focus it
+        if let Some(win) = app.get_webview_window(&label) {
+            let _ = win.set_focus();
+        }
+        return Ok(());
+    }
+
+    let (w, h) = floating_size(&plugin_id);
+
+    tauri::WebviewWindowBuilder::new(
+        &app,
+        &label,
+        tauri::WebviewUrl::App(format!("/?floating={plugin_id}").into()),
+    )
+    .title("Ultimate Toolkit")
+    .inner_size(w, h)
+    .always_on_top(true)
+    .decorations(false)
+    .resizable(true)
+    .build()
+    .map_err(|e| format!("Failed to create window: {e}"))?;
+
+    Ok(())
+}
+
+#[tauri::command]
+fn close_floating_window(app: tauri::AppHandle, plugin_id: String) -> Result<(), String> {
+    let label = format!("floating-{plugin_id}");
+    if let Some(win) = app.get_webview_window(&label) {
+        win.close().map_err(|e| format!("Failed to close: {e}"))?;
+    }
+    Ok(())
+}
+
+#[tauri::command]
+fn show_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
+    if app.get_webview_window("floating-toolbar").is_some() {
+        return Ok(());
+    }
+
+    tauri::WebviewWindowBuilder::new(
+        &app,
+        "floating-toolbar",
+        tauri::WebviewUrl::App("/?toolbar".into()),
+    )
+    .title("Toolbar")
+    .inner_size(380.0, 64.0)
+    .always_on_top(true)
+    .decorations(false)
+    .resizable(false)
+    .build()
+    .map_err(|e| format!("Failed to create toolbar: {e}"))?;
+
+    Ok(())
 }
 
 // ── Tauri Commands ─────────────────────────────────────────────
@@ -66,14 +136,13 @@ fn toggle_plugin(state: State<AppSettings>, plugin_id: String, active: bool) -> 
 
 #[tauri::command]
 async fn check_for_updates() -> Result<UpdateCheckResult, String> {
-    // ponytail: simple GitHub releases check
     let client = reqwest::Client::new();
     let resp = client
         .get("https://api.github.com/repos/egebulut/ultimate_toolkit_by_egebulut/releases/latest")
         .header("User-Agent", "ultimate-toolkit")
         .send()
         .await
-        .map_err(|e| format!("Update check failed: {}", e))?;
+        .map_err(|e| format!("Update check failed: {e}"))?;
 
     if !resp.status().is_success() {
         return Ok(UpdateCheckResult {
@@ -89,8 +158,8 @@ async fn check_for_updates() -> Result<UpdateCheckResult, String> {
         html_url: String,
     }
 
-    let release: Release = resp.json().await.map_err(|e| format!("Parse error: {}", e))?;
-    let current = "0.1.0";
+    let release: Release = resp.json().await.map_err(|e| format!("Parse error: {e}"))?;
+    let current = "1.0.0";
 
     Ok(UpdateCheckResult {
         available: release.tag_name.trim_start_matches('v') != current,
@@ -111,14 +180,8 @@ pub fn run() {
             theme: Mutex::new("system".to_string()),
             auto_update: Mutex::new(true),
             plugin_states: Mutex::new(vec![
-                PluginToggle {
-                    id: "ocr".to_string(),
-                    active: false,
-                },
-                PluginToggle {
-                    id: "ai_chat".to_string(),
-                    active: false,
-                },
+                PluginToggle { id: "ocr".to_string(), active: false },
+                PluginToggle { id: "ai_chat".to_string(), active: false },
             ]),
         })
         .invoke_handler(tauri::generate_handler![
@@ -133,6 +196,9 @@ pub fn run() {
             set_auto_update,
             toggle_plugin,
             check_for_updates,
+            create_floating_window,
+            close_floating_window,
+            show_floating_toolbar,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -144,10 +210,7 @@ mod tests {
 
     #[test]
     fn test_plugin_toggle_structure() {
-        let toggle = PluginToggle {
-            id: "ocr".to_string(),
-            active: true,
-        };
+        let toggle = PluginToggle { id: "ocr".to_string(), active: true };
         assert_eq!(toggle.id, "ocr");
         assert!(toggle.active);
     }
@@ -171,11 +234,11 @@ mod tests {
     fn test_update_check_result_structure() {
         let result = UpdateCheckResult {
             available: true,
-            version: Some("v0.2.0".to_string()),
+            version: Some("v1.0.0".to_string()),
             download_url: Some("https://example.com".to_string()),
         };
         assert!(result.available);
-        assert_eq!(result.version.unwrap(), "v0.2.0");
+        assert_eq!(result.version.unwrap(), "v1.0.0");
     }
 
     #[test]
@@ -187,5 +250,16 @@ mod tests {
         };
         assert!(!result.available);
         assert!(result.version.is_none());
+    }
+
+    #[test]
+    fn test_floating_size_known() {
+        assert_eq!(floating_size("ocr"), (440.0, 600.0));
+        assert_eq!(floating_size("ai_chat"), (420.0, 580.0));
+    }
+
+    #[test]
+    fn test_floating_size_fallback() {
+        assert_eq!(floating_size("unknown"), (400.0, 500.0));
     }
 }
