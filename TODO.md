@@ -39,7 +39,7 @@
 | 15 | Per-plugin config storage (`Storage.set/get` scoped) | 🟠 High | 🟢 Easy | ✅ Done | — |
 | 16 | **Floating UI support** — custom button (56×56 circular, draggable, icon) | 🔴 Kritik | 🟡 Medium | ✅ Done | #10 |
 | 17 | Plugin state persistence (enabled/disabled config) | 🟠 High | 🟢 Easy | ✅ Done | #12 |
-| 18 | **Add Custom Plugin** UI — file picker + load from local dir | 🟠 High | 🟡 Medium | ❌ Pending | #12 |
+| 18 | **Add Custom Plugin** UI — file picker + load from local dir | 🟠 High | 🟡 Medium | ✅ Done | #12 |
 | 19 | **Add Plugin from GitHub** — `git clone` + register from repo | 🟠 High | 🔴 Hard | ❌ Pending | #12, #44 |
 | 20 | Plugin error boundary — tek plugin crash'i tüm app'i götürmesin | 🟠 High | 🟡 Medium | ✅ Done | #12 |
 | 21 | Plugin hot-reload (dev mode) | 🟢 Low | 🔴 Hard | ❌ Pending | #12 |
