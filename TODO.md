@@ -90,7 +90,7 @@
 | 45 | Content: Settings (3 pages) | 🟠 High | 🟢 Easy | ✅ Done | — |
 | 46 | Vercel deploy + domain (`utoolkit.vercel.app`) | 🔴 Kritik | 🟢 Easy | ✅ Done | — |
 | 47 | **Plugin SDK / API docs page** — full API reference for devs | 🟠 High | 🟡 Medium | ❌ Pending | #43 |
-| 48 | **Search** in docs (client-side index) | 🟡 Medium | 🟡 Medium | ❌ Pending | #39 |
+| 48 | **Search** in docs (client-side index) | 🟡 Medium | 🟡 Medium | ✅ Done | #39 |
 
 ---
 
@@ -137,11 +137,11 @@
 | Plugin Sistemi | 8 | 2 | 10 |
 | OCR Plugin | 6 | 2 | 8 |
 | AI Chat Plugin | 8 | 0 | 8 |
-| Web Docs | 9 | 2 | 11 |
+| Web Docs | 10 | 1 | 11 |
 | Plugin Template Branch | 4 | 0 | 4 |
 | Rust Backend | 4 | 2 | 6 |
 | Tema & Görsellik | 3 | 0 | 3 |
-| **Toplam** | **50** | **11** | **61** |
+| **Toplam** | **51** | **10** | **61** |
 
 | Zorluk | Adet |
 |--------|------|
@@ -152,10 +152,9 @@
 ### 🔥 Next Up (öncelikli)
 
 1. **#1** Rust toolchain kur + `npm run tauri:build` dene
-2. **#48** Search in docs (client-side index)
-3. **#25** Screen capture (native Windows region capture)
-4. **#19** Add Plugin from GitHub
-5. **#29** Multi-engine OCR
-6. **#4** Code signing certificate (Windows SmartScreen)
-7. **#5** Tauri updater JSON automation
-8. **#21** Plugin hot-reload (dev mode)
+2. **#25** Screen capture (native Windows region capture)
+3. **#19** Add Plugin from GitHub
+4. **#29** Multi-engine OCR
+5. **#4** Code signing certificate (Windows SmartScreen)
+6. **#5** Tauri updater JSON automation
+7. **#21** Plugin hot-reload (dev mode)
