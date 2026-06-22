@@ -137,3 +137,55 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_plugin_toggle_structure() {
+        let toggle = PluginToggle {
+            id: "ocr".to_string(),
+            active: true,
+        };
+        assert_eq!(toggle.id, "ocr");
+        assert!(toggle.active);
+    }
+
+    #[test]
+    fn test_app_settings_initial_state() {
+        let settings = AppSettings {
+            theme: Mutex::new("system".to_string()),
+            auto_update: Mutex::new(true),
+            plugin_states: Mutex::new(vec![
+                PluginToggle { id: "ocr".to_string(), active: false },
+                PluginToggle { id: "ai_chat".to_string(), active: false },
+            ]),
+        };
+        assert_eq!(*settings.theme.lock().unwrap(), "system");
+        assert!(*settings.auto_update.lock().unwrap());
+        assert_eq!(settings.plugin_states.lock().unwrap().len(), 2);
+    }
+
+    #[test]
+    fn test_update_check_result_structure() {
+        let result = UpdateCheckResult {
+            available: true,
+            version: Some("v0.2.0".to_string()),
+            download_url: Some("https://example.com".to_string()),
+        };
+        assert!(result.available);
+        assert_eq!(result.version.unwrap(), "v0.2.0");
+    }
+
+    #[test]
+    fn test_update_check_result_not_available() {
+        let result = UpdateCheckResult {
+            available: false,
+            version: None,
+            download_url: None,
+        };
+        assert!(!result.available);
+        assert!(result.version.is_none());
+    }
+}

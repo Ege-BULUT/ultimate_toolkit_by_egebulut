@@ -160,3 +160,66 @@ pub fn download_language_data(lang: String) -> Result<String, String> {
     std::fs::write(&tessdata.join(format!("{}.traineddata", lang)), &bytes).map_err(|e| e.to_string())?;
     Ok(format!("✅ {} installed", lang))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_known_languages_contains_english() {
+        assert!(KNOWN_LANGUAGES.iter().any(|(code, _)| *code == "eng"));
+    }
+
+    #[test]
+    fn test_known_languages_contains_turkish() {
+        assert!(KNOWN_LANGUAGES.iter().any(|(code, _)| *code == "tur"));
+    }
+
+    #[test]
+    fn test_known_languages_count() {
+        assert_eq!(KNOWN_LANGUAGES.len(), 16);
+    }
+
+    #[test]
+    fn test_known_languages_all_have_names() {
+        for (code, name) in KNOWN_LANGUAGES {
+            assert!(!code.is_empty(), "Language code is empty");
+            assert!(!name.is_empty(), "Language name is empty for code: {}", code);
+        }
+    }
+
+    #[test]
+    fn test_parse_confidence_empty_tsv() {
+        let result = parse_confidence(&PathBuf::from("nonexistent.tsv"));
+        assert_eq!(result, 0.0);
+    }
+
+    #[test]
+    fn test_language_info_structure() {
+        let info = LanguageInfo {
+            code: "eng".to_string(),
+            name: "English".to_string(),
+            installed: true,
+        };
+        assert_eq!(info.code, "eng");
+        assert_eq!(info.name, "English");
+        assert!(info.installed);
+    }
+
+    #[test]
+    fn test_ocr_result_structure() {
+        let result = OcrResult {
+            text: "hello".to_string(),
+            confidence: 0.95,
+        };
+        assert_eq!(result.text, "hello");
+        assert!(result.confidence > 0.9);
+    }
+
+    #[test]
+    fn test_unknown_language_returns_error() {
+        let result = download_language_data("xyz".to_string());
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("Unknown language"));
+    }
+}
