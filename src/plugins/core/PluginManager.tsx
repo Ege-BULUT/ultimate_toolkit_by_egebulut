@@ -20,11 +20,9 @@ export const PluginManager: React.FC<PluginManagerProps> = ({
   onOpenPlugin,
 }) => {
   const [plugins, setPlugins] = useState<PluginDefinition[]>([]);
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const refresh = useCallback(() => {
     setPlugins(PluginRegistry.getAllDefinitions());
-    setRefreshKey((k) => k + 1);
   }, []);
 
   useEffect(() => {
