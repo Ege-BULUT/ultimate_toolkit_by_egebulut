@@ -9,6 +9,7 @@
       "icon": "&#128640;",
       "description": "Set up Ultimate Toolkit on your machine",
       "pages": [
+        { "id": "changelog", "title": "What's New in v1.0.0", "description": "Changelog and release notes for v1.0.0" },
         {
           "id": "index",
           "title": "Overview",
