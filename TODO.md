@@ -25,7 +25,7 @@
 | 8 | **Plugin Manager page** — toggle on/off, config, floating button | 🔴 Kritik | 🟡 Medium | ✅ Done | #6, #16 |
 | 9 | **Settings page** — theme, auto-update, about | 🟠 High | 🟢 Easy | ✅ Done | #6 |
 | 10 | **Floating window sistemi** — drag/resize | 🟠 High | 🟡 Medium | ✅ Done | #6 |
-| 11 | **Welcome / Onboarding** — ilk açılışta quick start ekranı | 🟢 Low | 🟢 Easy | ❌ Pending | #6 |
+| 11 | **Welcome / Onboarding** — ilk açılışta quick start ekranı | 🟢 Low | 🟢 Easy | ✅ Done | #6 |
 
 ---
 
@@ -41,7 +41,7 @@
 | 17 | Plugin state persistence (enabled/disabled config) | 🟠 High | 🟢 Easy | ✅ Done | #12 |
 | 18 | **Add Custom Plugin** UI — file picker + load from local dir | 🟠 High | 🟡 Medium | ❌ Pending | #12 |
 | 19 | **Add Plugin from GitHub** — `git clone` + register from repo | 🟠 High | 🔴 Hard | ❌ Pending | #12, #44 |
-| 20 | Plugin error boundary — tek plugin crash'i tüm app'i götürmesin | 🟠 High | 🟡 Medium | ❌ Pending | #12 |
+| 20 | Plugin error boundary — tek plugin crash'i tüm app'i götürmesin | 🟠 High | 🟡 Medium | ✅ Done | #12 |
 | 21 | Plugin hot-reload (dev mode) | 🟢 Low | 🔴 Hard | ❌ Pending | #12 |
 
 ---
@@ -70,9 +70,9 @@
 | 32 | **Provider API integrations** — OpenAI, Anthropic, Gemini, OpenRouter, DeepSeek, HuggingFace | 🔴 Kritik | 🟡 Medium | ✅ Done | — |
 | 33 | **Ollama auto-detect** — local model detection | 🟠 High | 🟢 Easy | ✅ Done | — |
 | 34 | **Floating chat window** — summon, conversation UI | 🟠 High | 🟡 Medium | ✅ Done | #10 |
-| 35 | Conversation persistence (local history) | 🟡 Medium | 🟢 Easy | ❌ Pending | #15 |
+| 35 | Conversation persistence (local history) | 🟡 Medium | 🟢 Easy | ✅ Done | #15 |
 | 36 | System prompt editor | 🟡 Medium | 🟢 Easy | ✅ Done | #31 |
-| 37 | Markdown rendering in chat output | 🟠 High | 🟢 Easy | ❌ Pending | — |
+| 37 | Markdown rendering in chat output | 🟠 High | 🟢 Easy | ✅ Done | — |
 
 ---
 

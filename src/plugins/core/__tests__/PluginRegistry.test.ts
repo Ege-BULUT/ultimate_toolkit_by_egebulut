@@ -101,4 +101,39 @@ describe("PluginRegistry", () => {
     expect(testPlugin?.hasFloatingUI).toBe(false);
     expect(floatingPlugin?.hasFloatingUI).toBe(true);
   });
+
+  describe("registerFromModule", () => {
+    it("registers a plugin from a module with default export", () => {
+      const plugin = new TestPlugin();
+      const mod = { default: plugin };
+      const result = PluginRegistry.registerFromModule(mod);
+      expect(result.success).toBe(true);
+      expect(result.id).toBe("test_plugin");
+      expect(PluginRegistry.get("test_plugin")).toBe(plugin);
+    });
+
+    it("registers a plugin from a module with named class export", () => {
+      const mod = { MyPlugin: TestPlugin };
+      const result = PluginRegistry.registerFromModule(mod as unknown as Record<string, unknown>);
+      expect(result.success).toBe(true);
+      expect(result.id).toBe("test_plugin");
+      expect(PluginRegistry.get("test_plugin")).toBeDefined();
+    });
+
+    it("returns error when module has no PluginBase class", () => {
+      const mod = { foo: "bar", baz: 42 };
+      const result = PluginRegistry.registerFromModule(mod);
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("PluginBase");
+    });
+
+    it("warns on duplicate registration via registerFromModule", () => {
+      const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const mod = { default: new TestPlugin() };
+      PluginRegistry.registerFromModule(mod);
+      PluginRegistry.registerFromModule(mod);
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("already registered"));
+      spy.mockRestore();
+    });
+  });
 });
