@@ -8,11 +8,11 @@
 
 | # | Task | Impact | Difficulty | Status | Depends On |
 |---|------|--------|------------|--------|------------|
-| 1 | `npm run tauri:build` çalışır durumda — MSI/NSIS üretimi | 🔴 Kritik | 🟡 Medium | ❌ Pending | Rust toolchain, deps |
-| 2 | GitHub Actions CI — push'ta `cargo test + npm run tsc + npm run lint` | 🔴 Kritik | 🟢 Easy | ❌ Pending | #1 |
-| 3 | GitHub Actions CD — tag push'unda `.msi` + `.exe` artifact yayınla | 🟠 High | 🟡 Medium | ❌ Pending | #1, #2 |
+| 1 | `npm run tauri:build` çalışır durumda — NSIS üretimi | 🔴 Kritik | 🟡 Medium | 🟡 Partial | Frontend build ✓, Rust toolchain gerekli |
+| 2 | GitHub Actions CI — push'ta `npm test + cargo check + clippy` | 🔴 Kritik | 🟢 Easy | ✅ Done | — |
+| 3 | GitHub Actions CD — tag push'unda `.exe` artifact yayınla | 🟠 High | 🟡 Medium | ✅ Done | #1, #2 |
 | 4 | Code signing certificate entegrasyonu (Windows SmartScreen) | 🟠 High | 🔴 Hard | ❌ Pending | #3 |
-| 5 | Tauri updater JSON (`latest.yml`) Release'lerle otomatik güncelle | 🟡 Medium | 🟡 Medium | ❌ Pending | #3 |
+| 5 | Tauri updater JSON — Release'lerle otomatik güncelle | 🟡 Medium | 🟡 Medium | ❌ Pending | #3 |
 
 ---
 
@@ -132,32 +132,32 @@
 
 | Kategori | Done | Pending | Toplam |
 |----------|------|---------|--------|
-| Build & Release | 0 | 5 | 5 |
-| App UI / Navigation | 5 | 1 | 6 |
-| Plugin Sistemi | 6 | 3 | 9 |
+| Build & Release | 2 | 3 | 5 |
+| App UI / Navigation | 6 | 0 | 6 |
+| Plugin Sistemi | 8 | 2 | 10 |
 | OCR Plugin | 6 | 2 | 8 |
-| AI Chat Plugin | 6 | 2 | 8 |
-| Web Docs | 8 | 2 | 10 |
+| AI Chat Plugin | 8 | 0 | 8 |
+| Web Docs | 9 | 2 | 11 |
 | Plugin Template Branch | 0 | 4 | 4 |
 | Rust Backend | 4 | 2 | 6 |
 | Tema & Görsellik | 3 | 0 | 3 |
-| **Toplam** | **38** | **21** | **59** |
+| **Toplam** | **46** | **15** | **61** |
 
 | Zorluk | Adet |
 |--------|------|
-| 🟢 Easy | 32 |
-| 🟡 Medium | 22 |
+| 🟢 Easy | 33 |
+| 🟡 Medium | 23 |
 | 🔴 Hard | 5 |
 
 ### 🔥 Next Up (öncelikli)
 
-1. **#1** `npm run tauri:build` — çalıştığını doğrula
-2. **#2** GitHub Actions CI — push'ta test/build/lint
-3. **#18** Add Custom Plugin UI — file picker + register
-4. **#20** Plugin error boundary — crash isolation
-5. **#37** Markdown rendering in chat output
-6. **#35** Conversation persistence (localStorage)
-7. **#47** Plugin SDK / API docs page (web docs)
-8. **#25** Screen capture (native Windows region capture)
-9. **#49** Plugin template branch
-10. **#19** Add Plugin from GitHub
+1. **#1** Rust toolchain kur + `npm run tauri:build` dene
+2. **#47** Plugin SDK / API docs page (web docs)
+3. **#48** Search in docs (client-side index)
+4. **#49** Plugin template branch (`template/example-plugin`)
+5. **#25** Screen capture (native Windows region capture)
+6. **#19** Add Plugin from GitHub
+7. **#29** Multi-engine OCR
+8. **#4** Code signing certificate (Windows SmartScreen)
+9. **#5** Tauri updater JSON automation
+10. **#21** Plugin hot-reload (dev mode)
