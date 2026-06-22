@@ -30,7 +30,10 @@ Chat with leading AI models, all from one floating window.
 - Toggle plugins on/off individually
 - Each plugin has its own configuration page
 - Floating window support for quick access
+- Crash isolation via ErrorBoundary — one bad plugin won't break the app
+- Load custom plugins from `.js`/`.mjs` files without recompiling
 - Write your own plugins! ([Guide](https://utoolkit.vercel.app/docs/custom-plugins))
+- Clone the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin) for a boilerplate starter
 
 ### ⚙️ **Smart Settings**
 - Dark / Light / System theme
@@ -65,7 +68,8 @@ npm run tauri:build
 
 ### Download
 
-Pre-built installers are available on the [Releases](https://github.com/egebulut/ultimate_toolkit_by_egebulut/releases) page.
+Pre-built installers are auto-built on every `v*` tag push and published to [GitHub Releases](https://github.com/egebulut/ultimate_toolkit_by_egebulut/releases).
+You can also manually trigger a build from the Actions tab (`workflow_dispatch`).
 
 ---
 
@@ -80,14 +84,15 @@ ultimate_toolkit_by_egebulut/
 │   │   ├── core/           # PluginBase, Registry, FloatingWindow
 │   │   ├── ocr/            # OCR plugin
 │   │   └── ai_chat/        # AI Chat plugin
-│   ├── styles/             # Tailwind + CSS variables
+│   ├── styles/             # CSS variables + globals
 │   ├── types/              # TypeScript types
-│   └── utils/              # Tauri helpers, storage
+│   └── utils/              # Storage, Tauri helpers
 ├── src-tauri/              # Rust backend
 │   └── src/plugins/        # Rust plugin implementations
-├── ultimate_toolkit_web/   # Landing page (Vercel)
+├── ultimate_toolkit_web/   # Landing page + docs SPA (Vercel)
+│   └── docs/               # Versioned docs content + search index
+├── .github/workflows/      # CI + Release (auto .exe build)
 ├── PLAN.md                 # Architecture & plan
-├── ROADMAP.md              # Development roadmap
 └── TODO.md                 # Task tracking
 ```
 
@@ -112,6 +117,9 @@ npm run tauri:build
 | `main` | Latest stable release |
 | `DEV`  | Active development |
 | `feat/*` | Feature branches → PR to DEV |
+| `template/example-plugin` | Boilerplate for plugin developers |
+
+Release builds are triggered by pushing a `v*` tag — see `.github/workflows/release.yml`.
 
 ---
 
@@ -119,7 +127,7 @@ npm run tauri:build
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
-**Plugin developers**: Check out the [Custom Plugin Guide](https://utoolkit.vercel.app/docs/custom-plugins) and [Custom OCR Guide](https://utoolkit.vercel.app/docs/custom-ocr).
+**Plugin developers**: Start from the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin), or check out the [Plugin API Docs](https://utoolkit.vercel.app/docs/v0.1.0/plugins/plugin-api).
 
 ---
 
@@ -133,5 +141,7 @@ MIT © [Ege Bulut](https://github.com/egebulut). See [LICENSE](./LICENSE).
 
 - [Website](https://utoolkit.vercel.app)
 - [GitHub](https://github.com/egebulut/ultimate_toolkit_by_egebulut)
-- [Docs](https://utoolkit.vercel.app/docs)
+- [Docs](https://utoolkit.vercel.app/docs/v0.1.0)
+- [Plugin API Reference](https://utoolkit.vercel.app/docs/v0.1.0/plugins/plugin-api)
+- [Plugin Template](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin)
 - [Report Bug](https://github.com/egebulut/ultimate_toolkit_by_egebulut/issues)
