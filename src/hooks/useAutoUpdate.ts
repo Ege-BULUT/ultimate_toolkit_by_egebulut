@@ -14,7 +14,12 @@ export function useAutoUpdate(enabled: boolean) {
       setUpdateInfo(result);
       return result;
     } catch (err) {
-      console.error("Update check failed:", err);
+      // Tauri unavailable (browser dev mode or non-Tauri build)
+      setUpdateInfo({
+        available: false,
+        version: null,
+        download_url: null,
+      });
       return null;
     } finally {
       setChecking(false);
@@ -25,7 +30,6 @@ export function useAutoUpdate(enabled: boolean) {
   useEffect(() => {
     if (enabled && !notifiedRef.current) {
       notifiedRef.current = true;
-      // Small delay to let the app render first
       const timer = setTimeout(() => checkForUpdates(), 3000);
       return () => clearTimeout(timer);
     }
