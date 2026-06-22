@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { PluginRegistry } from "./PluginRegistry";
 import { PluginCard } from "../../components/PluginCard";
+import { CustomPluginLoader } from "../../components/CustomPluginLoader";
 import type { PluginDefinition } from "../../types";
 import { Tooltip } from "../../components/Tooltip";
 
@@ -20,9 +21,13 @@ export const PluginManager: React.FC<PluginManagerProps> = ({
 }) => {
   const [plugins, setPlugins] = useState<PluginDefinition[]>([]);
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     setPlugins(PluginRegistry.getAllDefinitions());
   }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   return (
     <div>
@@ -63,6 +68,10 @@ export const PluginManager: React.FC<PluginManagerProps> = ({
             onConfigure={() => onOpenPlugin(plugin.id)}
           />
         ))}
+      </div>
+
+      <div className="mt-6">
+        <CustomPluginLoader onPluginLoaded={refresh} />
       </div>
     </div>
   );

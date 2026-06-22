@@ -12,6 +12,8 @@ import { useAutoUpdate } from "./hooks/useAutoUpdate";
 import { OCRConfig, OCRFloating } from "./plugins/ocr";
 import { AIChatConfig, AIChatFloating } from "./plugins/ai_chat";
 import { Tooltip } from "./components/Tooltip";
+import { ErrorBoundary } from "./plugins/core/ErrorBoundary";
+import { Welcome } from "./components/Welcome";
 import type { Theme } from "./types";
 
 PluginRegistry.register(new OCRPlugin());
@@ -119,6 +121,7 @@ const App: React.FC = () => {
     if (ConfigComponent) {
       const pluginDef = PluginRegistry.get(activePage);
       return (
+        <ErrorBoundary key={activePage}>
         <div>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -168,6 +171,7 @@ const App: React.FC = () => {
           </div>
           <ConfigComponent />
         </div>
+        </ErrorBoundary>
       );
     }
 
@@ -181,13 +185,17 @@ const App: React.FC = () => {
 
     if (floatingUIs.has("ocr") && activePlugins.has("ocr")) {
       elements.push(
-        <OCRFloating key="ocr-floating" onClose={() => handleCloseFloating("ocr")} />
+        <ErrorBoundary key="ocr-floating-eb">
+          <OCRFloating onClose={() => handleCloseFloating("ocr")} />
+        </ErrorBoundary>
       );
     }
 
     if (floatingUIs.has("ai_chat") && activePlugins.has("ai_chat")) {
       elements.push(
-        <AIChatFloating key="ai-chat-floating" onClose={() => handleCloseFloating("ai_chat")} />
+        <ErrorBoundary key="ai-chat-floating-eb">
+          <AIChatFloating onClose={() => handleCloseFloating("ai_chat")} />
+        </ErrorBoundary>
       );
     }
 
@@ -244,6 +252,9 @@ const App: React.FC = () => {
 
       {/* Floating Buttons */}
       {renderFloatingButtons()}
+
+      {/* Welcome / Onboarding — shows only on first visit */}
+      <Welcome onDismiss={() => {}} />
     </div>
   );
 };
