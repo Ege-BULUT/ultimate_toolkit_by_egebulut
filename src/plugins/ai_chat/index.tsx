@@ -6,6 +6,7 @@ import { isTauri, tryInvoke } from "../../utils/tauri";
 import { FloatingWindow } from "../core/FloatingWindow";
 import { Tooltip } from "../../components/Tooltip";
 import { MarkdownRenderer } from "../../components/MarkdownRenderer";
+import { useConversation } from "../../hooks/useConversation";
 
 // ── Plugin Definition ──────────────────────────────────────────
 
@@ -93,7 +94,8 @@ export const AIChatConfig: React.FC = () => {
   const [selectedProvider, setSelectedProvider] = useState("openai");
   const [ollamaAvailable, setOllamaAvailable] = useState(false);
   const [ollamaModels, setOllamaModels] = useState<OllamaModel[]>([]);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const { messages: chatMessages, addMessage: addChatMessage, clearHistory: clearChatHistory } =
+    useConversation("ai_chat");
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ export const AIChatConfig: React.FC = () => {
 
     const userMsg: ChatMessage = { role: "user", content: input };
     const newMessages = [...chatMessages, userMsg];
-    setChatMessages(newMessages);
+    addChatMessage(userMsg);
     setInput("");
     setLoading(true);
 
@@ -160,18 +162,12 @@ export const AIChatConfig: React.FC = () => {
         };
       }
 
-      setChatMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: response.content },
-      ]);
+      addChatMessage({ role: "assistant", content: response.content });
     } catch (err) {
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: `❌ Error: ${err}`,
-        },
-      ]);
+      addChatMessage({
+        role: "assistant",
+        content: `❌ Error: ${err}`,
+      });
     } finally {
       setLoading(false);
     }
@@ -392,9 +388,23 @@ export const AIChatConfig: React.FC = () => {
 
       {/* Chat Interface */}
       <section className="flex-1 flex flex-col min-h-0">
-        <h3 className="text-sm font-semibold mb-2" style={{ color: "var(--color-text-primary)" }}>
-          Chat
-        </h3>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-semibold" style={{ color: "var(--color-text-primary)" }}>
+            Chat
+          </h3>
+          {chatMessages.length > 0 && (
+            <button
+              onClick={clearChatHistory}
+              className="text-xs px-2 py-1 rounded transition-all"
+              style={{
+                color: "var(--color-text-muted)",
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
 
         <div
           className="flex-1 overflow-y-auto mb-3 p-3 rounded-xl space-y-3"
@@ -490,7 +500,8 @@ export const AIChatConfig: React.FC = () => {
 // ── AI Chat Floating UI ────────────────────────────────────────
 
 export const AIChatFloating: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const { messages, addMessage: addFloatingMessage, clearHistory: clearFloatingHistory } =
+    useConversation("ai_chat_floating");
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [provider, setProvider] = useState("openai");
@@ -504,7 +515,7 @@ export const AIChatFloating: React.FC<{ onClose: () => void }> = ({ onClose }) =
     if (!input.trim() || loading) return;
     const userMsg: ChatMessage = { role: "user", content: input };
     const newMessages = [...messages, userMsg];
-    setMessages(newMessages);
+    addFloatingMessage(userMsg);
     setInput("");
     setLoading(true);
 
@@ -524,19 +535,16 @@ export const AIChatFloating: React.FC<{ onClose: () => void }> = ({ onClose }) =
           },
         });
         if (result) {
-          setMessages((prev) => [...prev, { role: "assistant", content: result.content }]);
+          addFloatingMessage({ role: "assistant", content: result.content });
         }
       } else {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: `[${prov?.name}] Dev mode response. Your message: "${input}"`,
-          },
-        ]);
+        addFloatingMessage({
+          role: "assistant",
+          content: `[${prov?.name}] Dev mode response. Your message: "${input}"`,
+        });
       }
     } catch (err) {
-      setMessages((prev) => [...prev, { role: "assistant", content: `❌ ${err}` }]);
+      addFloatingMessage({ role: "assistant", content: `❌ ${err}` });
     } finally {
       setLoading(false);
     }
@@ -570,6 +578,20 @@ export const AIChatFloating: React.FC<{ onClose: () => void }> = ({ onClose }) =
             border: "1px solid var(--color-border)",
           }}
         >
+          {messages.length > 0 && (
+            <div className="flex justify-end mb-1">
+              <button
+                onClick={clearFloatingHistory}
+                className="text-xs px-2 py-0.5 rounded transition-all"
+                style={{
+                  color: "var(--color-text-muted)",
+                  border: "1px solid var(--color-border)",
+                }}
+              >
+                Clear
+              </button>
+            </div>
+          )}
           {messages.length === 0 && (
             <p className="text-xs text-center" style={{ color: "var(--color-text-muted)" }}>
               Ask anything...
