@@ -1,6 +1,6 @@
 # Ultimate Toolkit by EgeBulut 🛠️
 
-**A modern, open-source Windows utility toolkit** — inspired by Microsoft PowerToys, built with [Tauri](https://tauri.app) + [React](https://react.dev) + [Rust](https://www.rust-lang.org/).
+**A modern, open-source Windows utility toolkit**, inspired by Microsoft PowerToys, built with [Tauri](https://tauri.app) + [React](https://react.dev) + [Rust](https://www.rust-lang.org/).
 
 > Modular plugin architecture. Community extensions. Beautiful dark/light themes.
 
@@ -8,7 +8,7 @@
 
 ## ✨ Features
 
-### 🔍 **OCR** — Optical Character Recognition
+### 🔍 **OCR**: Optical Character Recognition
 Extract text from images, screenshots, and screen regions using Tesseract OCR.
 - 15+ languages (English pre-installed)
 - Multi-language support
@@ -16,8 +16,8 @@ Extract text from images, screenshots, and screen regions using Tesseract OCR.
 - Screen capture integration
 - [Custom OCR engine guide](https://utoolkit.vercel.app/docs/custom-ocr)
 
-### 🤖 **AI Chat** — Multi-Provider AI Assistant
-Chat with leading AI models — all from one floating window.
+### 🤖 **AI Chat**: Multi-Provider AI Assistant
+Chat with leading AI models, all from one floating window.
 - **Ollama** (local, auto-detected)
 - **OpenAI** (GPT-4o, GPT-4, GPT-3.5)
 - **Anthropic** (Claude 3 Opus, Sonnet, Haiku)
@@ -125,7 +125,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ## 📄 License
 
-MIT © [Ege Bulut](https://github.com/egebulut) — see [LICENSE](./LICENSE).
+MIT © [Ege Bulut](https://github.com/egebulut). See [LICENSE](./LICENSE).
 
 ---
 

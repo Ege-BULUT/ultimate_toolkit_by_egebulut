@@ -1,6 +1,6 @@
-# Ultimate Toolkit — TODO
+# Ultimate Toolkit TODO
 
-## Current Status: Phase 1 — Foundation
+## Current Status: Phase 1 Foundation
 
 | Status | Impact | Item | Substeps | Description |
 |--------|--------|------|----------|-------------|
@@ -33,19 +33,19 @@
 | 🟢 | Medium impact |
 | 🔵 | Low impact |
 
-## Phase 2 — Planned Features
+## Phase 2: Planned Features
 
-- [ ] **Color Picker** — Eye dropper with color format conversion
-- [ ] **Screen Ruler** — Measure pixels on screen
-- [ ] **Find My Mouse** — Highlight cursor on Ctrl
-- [ ] **Text Extractor** — Advanced OCR with region selection
-- [ ] **Batch Rename** — File renaming utility
-- [ ] **Keyboard Shortcut Manager** — Custom global hotkeys
+- [ ] **Color Picker**: Eye dropper with color format conversion
+- [ ] **Screen Ruler**: Measure pixels on screen
+- [ ] **Find My Mouse**: Highlight cursor on Ctrl
+- [ ] **Text Extractor**: Advanced OCR with region selection
+- [ ] **Batch Rename**: File renaming utility
+- [ ] **Keyboard Shortcut Manager**: Custom global hotkeys
 
-## Phase 3 — Ecosystem
+## Phase 3: Ecosystem
 
 - [ ] Community plugin store
 - [ ] Plugin SDK & CLI
-- [ ] Localization (i18n) — TR, DE, FR, ES, JA, KO, ZH
+- [ ] Localization (i18n): TR, DE, FR, ES, JA, KO, ZH
 - [ ] macOS / Linux support (Tauri makes this possible)
 - [ ] Portable mode (no install, USB run)
