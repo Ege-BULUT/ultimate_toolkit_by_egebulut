@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ultimate Toolkit — Modern Windows Utility Suite</title>
+  <meta name="description" content="Open-source Windows utility toolkit. OCR, AI Chat, and more. Built with Rust + React. Community-driven plugin system." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a84ff'/><text x='50' y='66' text-anchor='middle' fill='white' font-size='44' font-family='Arial' font-weight='bold'>UT</text></svg>" />
+  <style>
+    /* ── Reset & Variables ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --accent: #0a84ff;
+      --accent-dark: #0071e3;
+      --border: #d2d2d7;
+      --success: #30d158;
+      --max-width: 1100px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1e;
+        --surface: #2c2c2e;
+        --text: #f5f5f7;
+        --text-secondary: #a1a1a6;
+        --border: #48484a;
+      }
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; height: auto; }
+
+    /* ── Layout ── */
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(245,245,247,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    @media (prefers-color-scheme: dark) {
+      nav { background: rgba(28,28,30,0.85); }
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    nav .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 18px;
+    }
+    nav .logo-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 14px; font-weight: bold;
+    }
+    nav .links { display: flex; gap: 24px; align-items: center; }
+    nav .links a { font-size: 14px; font-weight: 500; color: var(--text); }
+    nav .links a:hover { color: var(--accent); text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 24px; border-radius: 100px; font-size: 14px; font-weight: 600;
+      border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(10,132,255,0.3); }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--border); }
+
+    /* ── Hero ── */
+    .hero { padding-top: 140px; text-align: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); margin-bottom: 24px;
+    }
+    .hero h1 { font-size: clamp(40px, 7vw, 72px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+    .hero h1 span { background: linear-gradient(135deg, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: clamp(16px, 2.5vw, 22px); color: var(--text-secondary); max-width: 640px; margin: 20px auto 36px; }
+    .hero .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Features ── */
+    .features h2 { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+    .features > .container > p { text-align: center; color: var(--text-secondary); margin-bottom: 48px; max-width: 560px; margin-left: auto; margin-right: auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 32px; transition: all 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .feature-icon { font-size: 36px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+    .feature-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+    .feature-tag { padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; background: var(--bg); color: var(--accent); }
+
+    /* ── Plugin System ── */
+    .plugins { background: var(--surface); }
+    .plugins h2 { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+    .plugins > .container > p { text-align: center; color: var(--text-secondary); margin-bottom: 48px; }
+    .plugin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .plugin-item {
+      padding: 20px; border-radius: 14px; border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px; transition: all 0.2s;
+    }
+    .plugin-item:hover { background: var(--bg); }
+    .plugin-icon { font-size: 28px; flex-shrink: 0; }
+    .plugin-info h4 { font-size: 14px; font-weight: 600; }
+    .plugin-info p { font-size: 12px; color: var(--text-secondary); }
+
+    /* ── CTA ── */
+    .cta { text-align: center; }
+    .cta h2 { font-size: 36px; font-weight: 700; margin-bottom: 16px; }
+    .cta p { color: var(--text-secondary); max-width: 480px; margin: 0 auto 32px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; }
+    footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    footer p { font-size: 13px; color: var(--text-secondary); }
+    footer .links { display: flex; gap: 16px; }
+    footer .links a { font-size: 13px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav .links a:not(.btn) { display: none; }
+      .hero h1 { font-size: 36px; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon">UT</div>
+        <span>Ultimate Toolkit</span>
+      </div>
+      <div class="links">
+        <a href="#features">Features</a>
+        <a href="#plugins">Plugins</a>
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut" target="_blank">GitHub</a>
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut/releases" target="_blank" class="btn btn-primary">
+          ⬇ Download v0.1.0
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">🦀 Built with Tauri + Rust + React</div>
+      <h1>Your Windows,<br /><span>Supercharged.</span></h1>
+      <p>
+        An open-source utility toolkit that puts powerful tools at your fingertips.
+        OCR, AI Chat, and a growing plugin ecosystem — all in one beautiful desktop app.
+      </p>
+      <div class="buttons">
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut/releases" class="btn btn-primary">
+          ⬇ Download for Windows
+        </a>
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut" class="btn btn-secondary">
+          View on GitHub →
+        </a>
+      </div>
+      <p style="margin-top: 12px; font-size: 13px; color: var(--text-secondary);">
+        Windows 10/11 · Free & Open Source · MIT License
+      </p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2>Powerful Features</h2>
+      <p>Everything you need, nothing you don't. Each tool is a plugin — toggle it on or off.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>OCR Text Extraction</h3>
+          <p>Extract text from images, screenshots, and screen regions. Supports 15+ languages with Tesseract OCR. English pre-installed.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Tesseract</span>
+            <span class="feature-tag">15+ Languages</span>
+            <span class="feature-tag">Multi-Engine</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>AI Chat Assistant</h3>
+          <p>Chat with 7 AI providers from one interface: OpenAI, Anthropic, Gemini, OpenRouter, DeepSeek, HuggingFace, and local Ollama.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">7 Providers</span>
+            <span class="feature-tag">Ollama Local</span>
+            <span class="feature-tag">Floating Window</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧩</div>
+          <h3>Plugin System</h3>
+          <p>Extend the toolkit with community plugins. Each plugin has its own config page and can float independently on your screen.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Extensible</span>
+            <span class="feature-tag">Floating UI</span>
+            <span class="feature-tag">Open API</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3>Beautiful UI</h3>
+          <p>Native Windows feel with premium design. Dark mode, light mode, or system-follow. Smooth animations and hover hints.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Dark Mode</span>
+            <span class="feature-tag">System Theme</span>
+            <span class="feature-tag">Tooltips</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Auto-Updates</h3>
+          <p>Stays up-to-date automatically. Checks for new versions on startup and can update itself from within the app.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">GitHub Releases</span>
+            <span class="feature-tag">Self-Update</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Blazing Fast</h3>
+          <p>Built with Rust and Tauri. Native performance with a fraction of the memory usage of Electron-based alternatives.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Native Rust</span>
+            <span class="feature-tag">Tauri v2</span>
+            <span class="feature-tag">Low Memory</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plugins -->
+  <section id="plugins" class="plugins">
+    <div class="container">
+      <h2>Included Plugins</h2>
+      <p>Start with these powerful tools. More coming soon.</p>
+      <div class="plugin-grid">
+        <div class="plugin-item">
+          <div class="plugin-icon">🔍</div>
+          <div class="plugin-info">
+            <h4>OCR Engine</h4>
+            <p>Text from images and screenshots</p>
+          </div>
+        </div>
+        <div class="plugin-item">
+          <div class="plugin-icon">🤖</div>
+          <div class="plugin-info">
+            <h4>AI Chat</h4>
+            <p>Multi-provider AI assistant</p>
+          </div>
+        </div>
+        <div class="plugin-item">
+          <div class="plugin-icon">🎨</div>
+          <div class="plugin-info">
+            <h4>Theme Manager</h4>
+            <p>Dark/Light/System themes</p>
+          </div>
+        </div>
+        <div class="plugin-item">
+          <div class="plugin-icon">🔄</div>
+          <div class="plugin-info">
+            <h4>Auto Updater</h4>
+            <p>Self-updating releases</p>
+          </div>
+        </div>
+        <div class="plugin-item">
+          <div class="plugin-icon">📦</div>
+          <div class="plugin-info">
+            <h4>Plugin Manager</h4>
+            <p>Toggle & configure all plugins</p>
+          </div>
+        </div>
+        <div class="plugin-item">
+          <div class="plugin-icon">🔧</div>
+          <div class="plugin-info">
+            <h4>More Coming Soon</h4>
+            <p>Color Picker, Screen Ruler, and more</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to supercharge your workflow?</h2>
+      <p>Download the latest release, explore the code, or contribute a plugin.</p>
+      <div class="buttons">
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut/releases" class="btn btn-primary">
+          ⬇ Download Now
+        </a>
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut" class="btn btn-secondary">
+          GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 <a href="https://github.com/egebulut">Ege Bulut</a>. MIT License.</p>
+      <div class="links">
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut">GitHub</a>
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut/issues">Issues</a>
+        <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut/discussions">Discussions</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
