@@ -1,4 +1,4 @@
-# Ultimate Toolkit by EgeBulut — Kurulum Notları
+# Ultimate Toolkit by EgeBulut: Kurulum Notlari
 
 ## Proje Bilgisi
 - **Proje**: Ultimate Toolkit by EgeBulut
@@ -69,9 +69,9 @@ git checkout -b DEV && git push -u origin DEV
 ```
 
 ## Branch Stratejisi
-- `main` — Latest stable release. Korunuyor.
-- `DEV` — Aktif geliştirme. Tüm PR'lar buraya.
-- `feat/*` — Feature branchleri → PR → DEV
+- `main`: Latest stable release. Korunuyor.
+- `DEV`: Aktif geliştirme. Tüm PR'lar buraya.
+- `feat/*`: Feature branchleri, PR ile DEV'e gider
 
 ## Proje Yapısı
 ```

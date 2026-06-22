@@ -21,9 +21,9 @@ Be respectful, constructive, and inclusive. We're all here to build something aw
 ### 🔧 Submit Code
 
 #### Branch Strategy
-- `main` — Latest stable. DO NOT commit directly.
-- `DEV` — Active development. PRs go here.
-- `feat/<name>` — Feature branches → PR to DEV
+- `main`: Latest stable. DO NOT commit directly.
+- `DEV`: Active development. PRs go here.
+- `feat/<name>`: Feature branches, PR to DEV
 
 #### Development Setup
 ```bash
