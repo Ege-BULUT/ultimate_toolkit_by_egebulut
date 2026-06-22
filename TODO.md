@@ -98,10 +98,10 @@
 
 | # | Task | Impact | Difficulty | Status | Depends On |
 |---|------|--------|------------|--------|------------|
-| 49 | **`template/example-plugin` branch** — boilerplate plugin branch | 🟠 High | 🟢 Easy | ❌ Pending | #12 |
-| 50 | Branch içeriği: `index.tsx`, `Config.tsx`, `FloatingComponent.tsx` | 🟠 High | 🟢 Easy | ❌ Pending | #49 |
-| 51 | Branch README: "How to use this template to build your own plugin" | 🟡 Medium | 🟢 Easy | ❌ Pending | #49 |
-| 52 | Branch CI: template'in bozulmadığını test eden workflow | 🟡 Medium | 🟡 Medium | ❌ Pending | #49 |
+| 49 | **`template/example-plugin` branch** — boilerplate plugin branch | 🟠 High | 🟢 Easy | ✅ Done | #12 |
+| 50 | Branch içeriği: `index.tsx`, `Config.tsx`, `FloatingComponent.tsx` | 🟠 High | 🟢 Easy | ✅ Done | #49 |
+| 51 | Branch README: "How to use this template to build your own plugin" | 🟡 Medium | 🟢 Easy | ✅ Done | #49 |
+| 52 | Branch CI: template'in bozulmadığını test eden workflow | 🟡 Medium | 🟡 Medium | ✅ Done | #49 |
 
 ---
 
@@ -138,10 +138,10 @@
 | OCR Plugin | 6 | 2 | 8 |
 | AI Chat Plugin | 8 | 0 | 8 |
 | Web Docs | 9 | 2 | 11 |
-| Plugin Template Branch | 0 | 4 | 4 |
+| Plugin Template Branch | 4 | 0 | 4 |
 | Rust Backend | 4 | 2 | 6 |
 | Tema & Görsellik | 3 | 0 | 3 |
-| **Toplam** | **46** | **15** | **61** |
+| **Toplam** | **50** | **11** | **61** |
 
 | Zorluk | Adet |
 |--------|------|
@@ -152,12 +152,10 @@
 ### 🔥 Next Up (öncelikli)
 
 1. **#1** Rust toolchain kur + `npm run tauri:build` dene
-2. **#47** Plugin SDK / API docs page (web docs)
-3. **#48** Search in docs (client-side index)
-4. **#49** Plugin template branch (`template/example-plugin`)
-5. **#25** Screen capture (native Windows region capture)
-6. **#19** Add Plugin from GitHub
-7. **#29** Multi-engine OCR
-8. **#4** Code signing certificate (Windows SmartScreen)
-9. **#5** Tauri updater JSON automation
-10. **#21** Plugin hot-reload (dev mode)
+2. **#48** Search in docs (client-side index)
+3. **#25** Screen capture (native Windows region capture)
+4. **#19** Add Plugin from GitHub
+5. **#29** Multi-engine OCR
+6. **#4** Code signing certificate (Windows SmartScreen)
+7. **#5** Tauri updater JSON automation
+8. **#21** Plugin hot-reload (dev mode)
