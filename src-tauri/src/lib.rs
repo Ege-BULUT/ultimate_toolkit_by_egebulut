@@ -40,7 +40,6 @@ fn floating_size(plugin_id: &str) -> (f64, f64) {
 fn create_floating_window(app: tauri::AppHandle, plugin_id: String) -> Result<(), String> {
     let label = format!("floating-{plugin_id}");
     if app.get_webview_window(&label).is_some() {
-        // Already open — focus it
         if let Some(win) = app.get_webview_window(&label) {
             let _ = win.set_focus();
         }
@@ -49,7 +48,7 @@ fn create_floating_window(app: tauri::AppHandle, plugin_id: String) -> Result<()
 
     let (w, h) = floating_size(&plugin_id);
 
-    tauri::WebviewWindowBuilder::new(
+    let builder = tauri::WebviewWindowBuilder::new(
         &app,
         &label,
         tauri::WebviewUrl::App(format!("/?floating={plugin_id}").into()),
@@ -58,9 +57,9 @@ fn create_floating_window(app: tauri::AppHandle, plugin_id: String) -> Result<()
     .inner_size(w, h)
     .always_on_top(true)
     .decorations(false)
-    .resizable(true)
-    .build()
-    .map_err(|e| format!("Failed to create window: {e}"))?;
+    .resizable(true);
+
+    builder.build().map_err(|e| format!("Failed to create window: {e}"))?;
 
     Ok(())
 }
@@ -80,7 +79,7 @@ fn show_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
         return Ok(());
     }
 
-    tauri::WebviewWindowBuilder::new(
+    let builder = tauri::WebviewWindowBuilder::new(
         &app,
         "floating-toolbar",
         tauri::WebviewUrl::App("/?toolbar".into()),
@@ -89,9 +88,9 @@ fn show_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
     .inner_size(380.0, 64.0)
     .always_on_top(true)
     .decorations(false)
-    .resizable(false)
-    .build()
-    .map_err(|e| format!("Failed to create toolbar: {e}"))?;
+    .resizable(false);
+
+    builder.build().map_err(|e| format!("Failed to create toolbar: {e}"))?;
 
     Ok(())
 }
