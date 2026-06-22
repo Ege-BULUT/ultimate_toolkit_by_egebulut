@@ -14,9 +14,13 @@ describe("useAutoUpdate", () => {
     it("resolves after checkForUpdates completes", async () => {
       const { result } = renderHook(() => useAutoUpdate(false));
       const res = await act(async () => result.current.checkForUpdates());
-      // In jsdom/browser mode, Tauri is unavailable, so returns null
+      // In jsdom/browser mode, Tauri is unavailable, resolves gracefully
       expect(res).toBeNull();
-      expect(result.current.updateInfo).toBeNull();
+      expect(result.current.updateInfo).toEqual({
+        available: false,
+        version: null,
+        download_url: null,
+      });
     });
 
     it("checking is false after checkForUpdates completes", async () => {
