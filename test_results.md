@@ -1,8 +1,8 @@
 # Test Results & Coverage Audit
 
-> Tarih: 2026-06-23
+> Tarih: 2026-06-23 (güncellendi)
 > Branch: DEV
-> Test: 17 files, 114 tests — **114/114 passed**
+> Test: 22 files, 182 tests — **182/182 passed**
 
 ---
 
@@ -30,15 +30,27 @@
 | 16 | `storage.test.ts` | 8 | ✅ 4 edge case (missing key, invalid JSON, localStorage unavailable) |
 | 17 | `tauri.test.ts` | 4 | ✅ 1 edge case (missing __TAURI_INTERNALS__) |
 
-### ❌ Test Edilmeyen Dosyalar (5 files — gaps)
+### ❌ Test Edilmeyen Dosyalar~~ (5 files — gaps)~~ → **✅ Tümü eklendi, 182/182 geçiyor**
 
-| # | Dosya | LOC | Complexity | Test Gerekiyor mu? |
-|---|-------|-----|-----------|-------------------|
-| 1 | `SettingsPanel.tsx` | 171 | 🟡 Medium — theme buttons, toggle, update check | **Evet** |
-| 2 | `useAutoUpdate.ts` | 35 | 🟢 Low — Tauri invoke wrapper | **Evet** |
-| 3 | `plugins/ocr/index.tsx` | 287 | 🔴 High — state machine, Tauri calls, 2 components | **Evet** |
-| 4 | `plugins/ai_chat/index.tsx` | 648 | 🔴 High — state machine, 7 providers, chat UI, 2 components | **Evet** |
-| 5 | `PluginManager.tsx` | 78 | 🟡 Medium — plugin list + CustomPluginLoader | **Evet** |
+~~| # | Dosya | LOC | Complexity | Test Gerekiyor mu? |~~
+~~|---|-------|-----|-----------|-------------------|~~
+~~| 1 | `SettingsPanel.tsx` | 171 | 🟡 Medium | **Evet** |~~
+~~| 2 | `useAutoUpdate.ts` | 35 | 🟢 Low | **Evet** |~~
+~~| 3 | `plugins/ocr/index.tsx` | 287 | 🔴 High | **Evet** |~~
+~~| 4 | `plugins/ai_chat/index.tsx` | 648 | 🔴 High | **Evet** |~~
+~~| 5 | `PluginManager.tsx` | 78 | 🟡 Medium | **Evet** |~~
+
+**Eklenen Yeni Test Dosyaları (5 adet, 68 test):**
+
+| # | Test Dosyası | Test Sayısı | Kapsanan Component'ler |
+|---|-------------|------------|----------------------|
+| 1 | `SettingsPanel.test.tsx` | 12 | Theme buttons (3), auto-update toggle, check-updates, about |
+| 2 | `useAutoUpdate.test.ts` | 7 | Initial state, checkForUpdates, timer scheduling, cleanup |
+| 3 | `ocr/index.test.tsx` | 14 | OCRPlugin class, OCRConfig (11), OCRFloating (3) |
+| 4 | `ai_chat/index.test.tsx` | 26 | AIChatPlugin (5), AIChatConfig (15), AIChatFloating (6) |
+| 5 | `PluginManager.test.tsx` | 9 | Plugin list, empty state, toggle, configure click, grid |
+
+**Toplam: 22 test dosyası, 182 test, 0 fail**
 
 ---
 
@@ -166,21 +178,19 @@ Bu en karmaşık component. Test senaryoları:
 | Kriter | Mevcut Durum | Puan |
 |--------|-------------|------|
 | **Edge case coverage** | Her test dosyasında 1-4 edge case var | 🟡 7/10 |
-| **Error state coverage** | ErrorBoundary + storage + registry hata durumları test edilmiş | 🟡 7/10 |
-| **Integration tests** | App.test.tsx ile 5 integration test var ama AI Chat/OCR integration yok | 🟠 5/10 |
-| **Component interaction** | Click, toggle, input testleri mevcut | 🟡 7/10 |
-| **Async/state** | useConversation, useSettings'de async mock var | 🟡 6/10 |
+| **Error state coverage** | ErrorBoundary + storage + registry + OCR browser-mode hata durumları test edilmiş | 🟡 8/10 |
+| **Integration tests** | App.test.tsx, PluginCard, Sidebar, OCR/AI Chat interaction testleri | 🟡 7/10 |
+| **Component interaction** | Click, toggle, input, Enter key testleri mevcut | 🟢 8/10 |
+| **Async/state** | useConversation, useSettings, useAutoUpdate'de async mock var | 🟡 7/10 |
 | **Accessibility** | Hiçbir aksesibilite testi yok (aria, keyboard nav) | 🔴 2/10 |
-| **Coverage %** | 27 source file'dan 22'sinde test var (%81) | 🟡 7/10 |
+| **Coverage %** | 27 source file'dan 27'sinde test var (%100) | 🟢 10/10 |
 | **Setup/teardown** | beforeEach/afterEach düzgün kullanılıyor | 🟢 9/10 |
 
 **Öneriler:**
-1. En kritik: `ai_chat/index.tsx` (648 LOC) ve `ocr/index.tsx` (287 LOC) test eklenmeli — en karmaşık component'ler
-2. `SettingsPanel.tsx` testi kolay (171 LOC, pure presentational) — hızlıca eklenebilir
-3. `useAutoUpdate.ts` hook testi async Tauri mock ile yazılabilir
-4. `PluginManager.tsx` testi component testi olarak yazılmalı
-5. Aksesibilite testleri için `jest-axe` veya `@testing-library/jest-dom` custom matchers eklenebilir
-6. Mutation/edge: `noUncheckedIndexedAccess` strict mode için registry'de type-safe access pattern'leri test edilmeli
+1. ✅ ~~AI Chat + OCR testleri eklendi~~ **TAMAMLANDI**
+2. ✅ ~~SettingsPanel, useAutoUpdate, PluginManager testleri eklendi~~ **TAMAMLANDI**
+3. Aksesibilite testleri için `jest-axe` veya `@testing-library/jest-dom` custom matchers eklenebilir
+4. Rust backend testleri (`cargo test`) Rust toolchain olan ortamda çalıştırılmalı
 
 ---
 
@@ -204,10 +214,10 @@ Tauri API'leri (`@tauri-apps/api/core`) için dynamic import mock'u gerekli — 
 
 | Metric | Değer |
 |--------|-------|
-| Test Files | 17 |
-| Total Tests | 114 |
-| Passing | **114 (100%)** |
+| Test Files | 22 |
+| Total Tests | 182 |
+| Passing | **182 (100%)** |
 | Failing | **0** |
-| Untested Source Files | 5 |
-| Coverage Gap (LOC) | ~1219 satır |
-| Test Kalite Skoru | 🟡 7/10 |
+| Untested Source Files | **0** (eskiden 5, hepsi eklendi) |
+| Coverage Gap (LOC) | **0** (eskiden ~1219 satır) |
+| Test Kalite Skoru | 🟡 7.5/10 (+0.5: coverage %100 oldu) |
