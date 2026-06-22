@@ -1,260 +1,133 @@
 import React, { useState, useCallback } from "react";
-import { Sidebar, type Page } from "./components/Sidebar";
-import { PluginManager } from "./plugins/core/PluginManager";
-import { SettingsPanel } from "./components/SettingsPanel";
 import { PluginRegistry } from "./plugins/core/PluginRegistry";
-import { FloatingButton } from "./components/FloatingButton";
-import { OCRPlugin } from "./plugins/ocr";
-import { AIChatPlugin } from "./plugins/ai_chat";
-import { useTheme } from "./hooks/useTheme";
-import { useSettings } from "./hooks/useSettings";
-import { useAutoUpdate } from "./hooks/useAutoUpdate";
-import { OCRConfig, OCRFloating } from "./plugins/ocr";
-import { AIChatConfig, AIChatFloating } from "./plugins/ai_chat";
-import { Tooltip } from "./components/Tooltip";
 import { ErrorBoundary } from "./plugins/core/ErrorBoundary";
-import { Welcome } from "./components/Welcome";
-import type { Theme } from "./types";
+import { ExamplePlugin, ExampleConfig, ExampleFloating } from "./plugins/example";
+import { FloatingWindow } from "./plugins/core/FloatingWindow";
 
-PluginRegistry.register(new OCRPlugin());
-PluginRegistry.register(new AIChatPlugin());
+// ── Register your plugins here ──────────────────────────────
+PluginRegistry.register(new ExamplePlugin());
 
 const PLUGIN_CONFIGS: Record<string, React.FC> = {
-  ocr: OCRConfig,
-  ai_chat: AIChatConfig,
+  example: ExampleConfig,
 };
 
 const App: React.FC = () => {
-  const { theme, setTheme } = useTheme();
-  const { settings, setAutoUpdate, togglePlugin } = useSettings();
-  const { updateInfo, checking: checkingUpdate, checkForUpdates } = useAutoUpdate(settings.auto_update);
+  const [activePage, setActivePage] = useState<string | null>(null);
+  const [showFloating, setShowFloating] = useState(false);
 
-  const [activePage, setActivePage] = useState<Page>("plugins");
-  const [floatingUIs, setFloatingUIs] = useState<Set<string>>(new Set());
+  // Get all registered plugin definitions
+  const plugins = PluginRegistry.getAllDefinitions();
 
-  // Derive active plugins set
-  const activePlugins = new Set(
-    settings.plugin_states.filter((p) => p.active).map((p) => p.id)
-  );
+  const handleToggle = useCallback((id: string) => {
+    if (activePage === id) {
+      PluginRegistry.deactivate(id);
+      setActivePage(null);
+    } else {
+      PluginRegistry.activate(id);
+      setActivePage(id);
+    }
+  }, [activePage]);
 
-  // Plugin sidebar list
-  const pluginList = PluginRegistry.getAllDefinitions().map((p) => ({
-    id: p.id,
-    name: p.name,
-    icon: p.icon,
-  }));
-
-  // ── Handlers ──────────────────────────────────────────────
-
-  const handleTogglePlugin = useCallback(
-    (id: string, active: boolean) => {
-      togglePlugin(id, active);
-      if (!active) {
-        // Close floating UI when deactivated
-        setFloatingUIs((prev) => {
-          const next = new Set(prev);
-          next.delete(id);
-          return next;
-        });
-      }
-    },
-    [togglePlugin]
-  );
-
-  const handleOpenPlugin = useCallback((id: string) => {
-    setActivePage(id);
+  const handleCloseFloating = useCallback(() => {
+    setShowFloating(false);
   }, []);
-
-  const handleToggleFloating = useCallback((id: string) => {
-    setFloatingUIs((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
-
-  const handleCloseFloating = useCallback((id: string) => {
-    setFloatingUIs((prev) => {
-      const next = new Set(prev);
-      next.delete(id);
-      return next;
-    });
-  }, []);
-
-  const handleThemeChange = useCallback(
-    (t: Theme) => {
-      setTheme(t);
-    },
-    [setTheme]
-  );
-
-  // ── Render page content ───────────────────────────────────
-
-  const renderContent = () => {
-    if (activePage === "plugins") {
-      return (
-        <PluginManager
-          activePlugins={activePlugins}
-          onTogglePlugin={handleTogglePlugin}
-          onOpenPlugin={handleOpenPlugin}
-        />
-      );
-    }
-
-    if (activePage === "settings") {
-      return (
-        <SettingsPanel
-          theme={theme}
-          autoUpdate={settings.auto_update}
-          onThemeChange={handleThemeChange}
-          onAutoUpdateChange={setAutoUpdate}
-          updateInfo={updateInfo}
-          checkingUpdate={checkingUpdate}
-          onCheckUpdate={checkForUpdates}
-        />
-      );
-    }
-
-    // Plugin config page
-    const ConfigComponent = PLUGIN_CONFIGS[activePage];
-    if (ConfigComponent) {
-      const pluginDef = PluginRegistry.get(activePage);
-      return (
-        <ErrorBoundary key={activePage}>
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{pluginDef?.definition.icon}</span>
-              <div>
-                <h2 className="text-lg font-bold" style={{ color: "var(--color-text-primary)" }}>
-                  {pluginDef?.definition.name}
-                </h2>
-                <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
-                  {pluginDef?.definition.description}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Tooltip text={activePlugins.has(activePage) ? "Deactivate plugin" : "Activate plugin"}>
-                <label className="toggle">
-                  <input
-                    type="checkbox"
-                    checked={activePlugins.has(activePage)}
-                    onChange={(e) => handleTogglePlugin(activePage, e.target.checked)}
-                  />
-                  <span className="toggle-slider" />
-                </label>
-              </Tooltip>
-
-              {pluginDef?.definition.hasFloatingUI && activePlugins.has(activePage) && (
-                <Tooltip text={floatingUIs.has(activePage) ? "Hide floating window" : "Show floating window"}>
-                  <button
-                    onClick={() => handleToggleFloating(activePage)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium"
-                    style={{
-                      background: floatingUIs.has(activePage)
-                        ? "var(--color-accent)"
-                        : "var(--color-surface-hover)",
-                      color: floatingUIs.has(activePage)
-                        ? "#fff"
-                        : "var(--color-text-primary)",
-                      border: "1px solid var(--color-border)",
-                    }}
-                  >
-                    {floatingUIs.has(activePage) ? "Hide Floating" : "Floating Window"}
-                  </button>
-                </Tooltip>
-              )}
-            </div>
-          </div>
-          <ConfigComponent />
-        </div>
-        </ErrorBoundary>
-      );
-    }
-
-    return null;
-  };
-
-  // ── Render floating UIs ───────────────────────────────────
-
-  const renderFloatingUIs = () => {
-    const elements: React.ReactNode[] = [];
-
-    if (floatingUIs.has("ocr") && activePlugins.has("ocr")) {
-      elements.push(
-        <ErrorBoundary key="ocr-floating-eb">
-          <OCRFloating onClose={() => handleCloseFloating("ocr")} />
-        </ErrorBoundary>
-      );
-    }
-
-    if (floatingUIs.has("ai_chat") && activePlugins.has("ai_chat")) {
-      elements.push(
-        <ErrorBoundary key="ai-chat-floating-eb">
-          <AIChatFloating onClose={() => handleCloseFloating("ai_chat")} />
-        </ErrorBoundary>
-      );
-    }
-
-    return elements;
-  };
-
-  // ── Render floating buttons for inactive floating plugins ─
-  const renderFloatingButtons = () => {
-    const elements: React.ReactNode[] = [];
-
-    if (activePlugins.has("ocr") && !floatingUIs.has("ocr")) {
-      elements.push(
-        <FloatingButton
-          key="ocr-fab"
-          icon="🔍"
-          tooltip="Open OCR"
-          onClick={() => handleToggleFloating("ocr")}
-        />
-      );
-    }
-
-    if (activePlugins.has("ai_chat") && !floatingUIs.has("ai_chat")) {
-      elements.push(
-        <FloatingButton
-          key="ai-chat-fab"
-          icon="🤖"
-          tooltip="Open AI Chat"
-          onClick={() => handleToggleFloating("ai_chat")}
-          position={{ x: window.innerWidth - 80, y: window.innerHeight / 2 + 80 }}
-        />
-      );
-    }
-
-    return elements;
-  };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar
-        activePage={activePage}
-        onNavigate={setActivePage}
-        pluginList={pluginList}
-        activePlugins={activePlugins}
-      />
+    <div style={{
+      padding: 32,
+      maxWidth: 720,
+      margin: "0 auto",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    }}>
+      <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 4 }}>
+        Ultimate Toolkit — Plugin Template
+      </h1>
+      <p style={{ color: "var(--color-text-secondary)", fontSize: 14, marginBottom: 32 }}>
+        Edit <code>src/plugins/example/</code> to build your own plugin.
+      </p>
 
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto p-6" style={{ background: "var(--color-surface)" }}>
-        {renderContent()}
-      </main>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {plugins.map((def) => (
+          <ErrorBoundary key={def.id}>
+            <div style={{
+              padding: 20,
+              borderRadius: 12,
+              border: "1px solid var(--color-border)",
+              background: "var(--color-surface)",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div>
+                  <strong>{def.name}</strong>
+                  <span style={{ color: "var(--color-text-muted)", fontSize: 13, marginLeft: 8 }}>
+                    v{def.version}
+                  </span>
+                </div>
+                <label style={{ position: "relative", display: "inline-block", width: 44, height: 24 }}>
+                  <input
+                    type="checkbox"
+                    checked={activePage === def.id}
+                    onChange={() => handleToggle(def.id)}
+                    style={{ opacity: 0, width: 0, height: 0 }}
+                  />
+                  <span style={{
+                    position: "absolute", cursor: "pointer", inset: 0,
+                    borderRadius: 12, transition: "0.3s",
+                    background: activePage === def.id ? "var(--color-accent)" : "var(--color-border)",
+                  }}>
+                    <span style={{
+                      position: "absolute", left: 2, bottom: 2,
+                      width: 20, height: 20, borderRadius: "50%",
+                      background: "#fff", transition: "0.3s",
+                      transform: activePage === def.id ? "translateX(20px)" : "none",
+                    }} />
+                  </span>
+                </label>
+              </div>
+              <p style={{ color: "var(--color-text-secondary)", fontSize: 13, marginTop: 6 }}>
+                {def.description}
+              </p>
 
-      {/* Floating Windows */}
-      {renderFloatingUIs()}
+              {/* Config page */}
+              {activePage === def.id && PLUGIN_CONFIGS[def.id] && (
+                <div style={{ marginTop: 16 }}>
+                  <ErrorBoundary key={def.id}>
+                    {React.createElement(PLUGIN_CONFIGS[def.id]!)}
+                  </ErrorBoundary>
+                  {def.hasFloatingUI && (
+                    <button
+                      onClick={() => setShowFloating((v) => !v)}
+                      style={{
+                        marginTop: 12,
+                        padding: "8px 16px",
+                        borderRadius: 8,
+                        border: "1px solid var(--color-border)",
+                        background: "var(--color-accent)",
+                        color: "#fff",
+                        cursor: "pointer",
+                        fontWeight: 600,
+                        fontSize: 13,
+                      }}
+                    >
+                      {showFloating ? "Hide Floating Window" : "Show Floating Window"}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </ErrorBoundary>
+        ))}
+      </div>
 
-      {/* Floating Buttons */}
-      {renderFloatingButtons()}
-
-      {/* Welcome / Onboarding — shows only on first visit */}
-      <Welcome onDismiss={() => {}} />
+      {/* Floating window (rendered outside card) */}
+      {showFloating && activePage === "example" && (
+        <FloatingWindow
+          title="Example Plugin"
+          icon="&#11088;"
+          onClose={handleCloseFloating}
+        >
+          <ErrorBoundary><ExampleFloating onClose={handleCloseFloating} /></ErrorBoundary>
+        </FloatingWindow>
+      )}
     </div>
   );
 };

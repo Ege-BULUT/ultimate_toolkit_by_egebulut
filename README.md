@@ -1,137 +1,80 @@
-# Ultimate Toolkit by EgeBulut 🛠️
+# Ultimate Toolkit — Plugin Template
 
-**A modern, open-source Windows utility toolkit**, inspired by Microsoft PowerToys, built with [Tauri](https://tauri.app) + [React](https://react.dev) + [Rust](https://www.rust-lang.org/).
+A boilerplate for building plugins for [Ultimate Toolkit](https://utoolkit.vercel.app).
 
-> Modular plugin architecture. Community extensions. Beautiful dark/light themes.
+Clone this branch to start developing your own plugin with the full plugin API, including `PluginBase`, `FloatingWindow`, `ErrorBoundary`, and the plugin registry.
 
----
-
-## ✨ Features
-
-### 🔍 **OCR**: Optical Character Recognition
-Extract text from images, screenshots, and screen regions using Tesseract OCR.
-- 15+ languages (English pre-installed)
-- Multi-language support
-- Clipboard paste & recognize
-- Screen capture integration
-- [Custom OCR engine guide](https://utoolkit.vercel.app/docs/custom-ocr)
-
-### 🤖 **AI Chat**: Multi-Provider AI Assistant
-Chat with leading AI models, all from one floating window.
-- **Ollama** (local, auto-detected)
-- **OpenAI** (GPT-4o, GPT-4, GPT-3.5)
-- **Anthropic** (Claude 3 Opus, Sonnet, Haiku)
-- **Google Gemini** (Gemini 2.0 Flash, 1.5 Pro)
-- **OpenRouter** (unified API for 200+ models)
-- **DeepSeek** (DeepSeek Chat, Coder)
-- **HuggingFace** (Llama, Mixtral, and more)
-
-### 🧩 **Plugin System**
-- Toggle plugins on/off individually
-- Each plugin has its own configuration page
-- Floating window support for quick access
-- Write your own plugins! ([Guide](https://utoolkit.vercel.app/docs/custom-plugins))
-
-### ⚙️ **Smart Settings**
-- Dark / Light / System theme
-- Auto-update checker
-- Per-plugin configuration
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Windows 10/11
-- [Rust](https://rustup.rs) (for building from source)
-- Node.js 18+
-
-### Install
+## Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/egebulut/ultimate_toolkit_by_egebulut.git
-cd ultimate_toolkit_by_egebulut
-
-# Install frontend dependencies
+git clone -b template/example-plugin https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut.git my-plugin
+cd my-plugin
 npm install
-
-# Build & run (development mode)
-npm run tauri:dev
-
-# Build for production
-npm run tauri:build
-```
-
-### Download
-
-Pre-built installers are available on the [Releases](https://github.com/egebulut/ultimate_toolkit_by_egebulut/releases) page.
-
----
-
-## 🏗️ Project Structure
-
-```
-ultimate_toolkit_by_egebulut/
-├── src/                    # React frontend
-│   ├── components/         # Reusable UI components
-│   ├── hooks/              # React hooks (theme, settings, updates)
-│   ├── plugins/            # Plugin system
-│   │   ├── core/           # PluginBase, Registry, FloatingWindow
-│   │   ├── ocr/            # OCR plugin
-│   │   └── ai_chat/        # AI Chat plugin
-│   ├── styles/             # Tailwind + CSS variables
-│   ├── types/              # TypeScript types
-│   └── utils/              # Tauri helpers, storage
-├── src-tauri/              # Rust backend
-│   └── src/plugins/        # Rust plugin implementations
-├── ultimate_toolkit_web/   # Landing page (Vercel)
-├── PLAN.md                 # Architecture & plan
-├── ROADMAP.md              # Development roadmap
-└── TODO.md                 # Task tracking
-```
-
----
-
-## 🔧 Development
-
-```bash
-# Frontend dev (browser)
 npm run dev
-
-# Desktop app dev
-npm run tauri:dev
-
-# Build desktop app
-npm run tauri:build
 ```
 
-### Branch Strategy
-| Branch | Purpose |
-|--------|---------|
-| `main` | Latest stable release |
-| `DEV`  | Active development |
-| `feat/*` | Feature branches → PR to DEV |
+The app opens in your browser at `http://localhost:1420`. You'll see the Example Plugin card with a toggle switch.
 
----
+## Project Structure
 
-## 🤝 Contributing
+```
+src/
+├── plugins/
+│   ├── core/               # Plugin system (do not modify)
+│   │   ├── PluginBase.ts
+│   │   ├── PluginRegistry.ts
+│   │   ├── ErrorBoundary.tsx
+│   │   └── FloatingWindow.tsx
+│   └── example/            ← YOUR PLUGIN STARTS HERE
+│       ├── index.tsx          # Main plugin class
+│       ├── Config.tsx         # Settings page component
+│       └── FloatingComponent.tsx  # Floating overlay component
+├── types/
+│   └── index.ts
+├── utils/
+│   └── storage.ts
+├── App.tsx
+└── main.tsx
+```
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+## Building Your Plugin
 
-**Plugin developers**: Check out the [Custom Plugin Guide](https://utoolkit.vercel.app/docs/custom-plugins) and [Custom OCR Guide](https://utoolkit.vercel.app/docs/custom-ocr).
+1. **Copy** `src/plugins/example/` to `src/plugins/your-plugin/`
+2. **Rename** the class and update the `PluginDefinition` metadata
+3. **Implement** `onActivate()` and `onDeactivate()` lifecycle methods
+4. **Optionally** add a Config component and/or a Floating UI component
+5. **Register** it in `src/App.tsx`:
 
----
+```tsx
+import { YourPlugin } from "./plugins/your-plugin";
+PluginRegistry.register(new YourPlugin());
+```
 
-## 📄 License
+## Plugin API
 
-MIT © [Ege Bulut](https://github.com/egebulut). See [LICENSE](./LICENSE).
+Full API reference: [Plugin API Docs](https://utoolkit.vercel.app/docs/v0.1.0/plugins/plugin-api)
 
----
+### Key Classes
 
-## 🔗 Links
+| Class | Purpose |
+|-------|---------|
+| `PluginBase` | Abstract class your plugin extends |
+| `PluginRegistry` | Global registry for registering/enabling/disabling plugins |
+| `FloatingWindow` | Draggable overlay window for your plugin's UI |
+| `ErrorBoundary` | Catches render errors so one plugin crash doesn't take down the app |
 
-- [Website](https://utoolkit.vercel.app)
-- [GitHub](https://github.com/egebulut/ultimate_toolkit_by_egebulut)
-- [Docs](https://utoolkit.vercel.app/docs)
-- [Report Bug](https://github.com/egebulut/ultimate_toolkit_by_egebulut/issues)
+### Storage
+
+```typescript
+import { Storage } from "../utils/storage";
+await Storage.set("my-plugin.key", { data: "value" });
+const value = await Storage.get("my-plugin.key", { data: "default" });
+```
+
+## Testing in the Real App
+
+Once your plugin is ready, copy the plugin directory into the main app's `src/plugins/` folder, register it, and run `npm run tauri:dev` to test inside the desktop app.
+
+## Publishing
+
+Share your plugin by publishing the code on GitHub. A community plugin registry is coming soon.
