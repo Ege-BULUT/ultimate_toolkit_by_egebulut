@@ -13,6 +13,7 @@ import { OCRConfig, OCRFloating } from "./plugins/ocr";
 import { AIChatConfig, AIChatFloating } from "./plugins/ai_chat";
 import { Tooltip } from "./components/Tooltip";
 import { ErrorBoundary } from "./plugins/core/ErrorBoundary";
+import { Welcome } from "./components/Welcome";
 import type { Theme } from "./types";
 
 PluginRegistry.register(new OCRPlugin());
@@ -251,6 +252,9 @@ const App: React.FC = () => {
 
       {/* Floating Buttons */}
       {renderFloatingButtons()}
+
+      {/* Welcome / Onboarding — shows only on first visit */}
+      <Welcome onDismiss={() => {}} />
     </div>
   );
 };

@@ -12,7 +12,7 @@ describe("App", () => {
   it("renders the app shell", () => {
     render(<App />);
     expect(screen.getByText("Ultimate Toolkit")).toBeInTheDocument();
-    expect(screen.getByText("v0.1.0")).toBeInTheDocument();
+    expect(screen.getAllByText("v0.1.0").length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders Plugins in sidebar and heading", () => {
