@@ -10,6 +10,7 @@ interface SettingsPanelProps {
   updateInfo: { available: boolean; version: string | null; download_url: string | null } | null;
   checkingUpdate: boolean;
   onCheckUpdate: () => void;
+  onOpenDebug?: () => void;
 }
 
 const THEME_OPTIONS: { value: Theme; label: string; icon: string; desc: string }[] = [
@@ -25,8 +26,9 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   onAutoUpdateChange,
   updateInfo,
   checkingUpdate,
-  onCheckUpdate,
-}) => {
+    onCheckUpdate,
+    onOpenDebug,
+  }) => {
   return (
     <div className="max-w-2xl">
       <h2 className="text-lg font-bold mb-1" style={{ color: "var(--color-text-primary)" }}>
@@ -148,7 +150,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           }}
         >
           <p>
-            <strong style={{ color: "var(--color-text-primary)" }}>Ultimate Toolkit</strong> v0.1.0
+            <strong style={{ color: "var(--color-text-primary)" }}>Ultimate Toolkit</strong> v1.0.1
           </p>
           <p className="mt-1">
             A modern, open-source Windows utility toolkit. Built with Tauri + React + Rust.
@@ -164,6 +166,20 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               Ege Bulut
             </a>
           </p>
+          {onOpenDebug && (
+            <button
+              onClick={onOpenDebug}
+              className="mt-3 px-3 py-1.5 rounded-lg text-xs font-medium"
+              style={{
+                background: "var(--color-surface)",
+                border: "1px solid var(--color-border)",
+                color: "var(--color-text-secondary)",
+                cursor: "pointer",
+              }}
+            >
+              🐛 Debug Logs
+            </button>
+          )}
         </div>
       </section>
     </div>

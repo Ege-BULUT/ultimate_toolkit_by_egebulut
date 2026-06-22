@@ -14,6 +14,7 @@ import { AIChatConfig, AIChatFloating } from "./plugins/ai_chat";
 import { Tooltip } from "./components/Tooltip";
 import { ErrorBoundary } from "./plugins/core/ErrorBoundary";
 import { Welcome } from "./components/Welcome";
+import { DebugPanel } from "./components/DebugPanel";
 import type { Theme } from "./types";
 import { isTauri } from "./utils/tauri";
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
 
   const [activePage, setActivePage] = useState<Page>("plugins");
   const [floatingUIs, setFloatingUIs] = useState<Set<string>>(new Set());
+  const [showDebug, setShowDebug] = useState(false);
 
   // Spawn the always-on-top floating toolbar on app start (Tauri only)
   useEffect(() => {
@@ -134,6 +136,7 @@ const App: React.FC = () => {
           updateInfo={updateInfo}
           checkingUpdate={checkingUpdate}
           onCheckUpdate={checkForUpdates}
+          onOpenDebug={() => setShowDebug(true)}
         />
       );
     }
@@ -294,6 +297,9 @@ const App: React.FC = () => {
 
       {/* Welcome / Onboarding — shows only on first visit */}
       <Welcome onDismiss={() => {}} />
+
+      {/* Debug Panel */}
+      {showDebug && <DebugPanel onClose={() => setShowDebug(false)} />}
     </div>
   );
 };
