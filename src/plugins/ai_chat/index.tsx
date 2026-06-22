@@ -5,6 +5,7 @@ import { AI_PROVIDERS } from "../../types";
 import { isTauri, tryInvoke } from "../../utils/tauri";
 import { FloatingWindow } from "../core/FloatingWindow";
 import { Tooltip } from "../../components/Tooltip";
+import { MarkdownRenderer } from "../../components/MarkdownRenderer";
 
 // ── Plugin Definition ──────────────────────────────────────────
 
@@ -427,7 +428,11 @@ export const AIChatConfig: React.FC = () => {
                     msg.role !== "user" ? "1px solid var(--color-border)" : "none",
                 }}
               >
-                {msg.content}
+                {msg.role === "assistant" || msg.role === "system" ? (
+                  <MarkdownRenderer content={msg.content} />
+                ) : (
+                  msg.content
+                )}
               </div>
             </div>
           ))}
@@ -580,11 +585,15 @@ export const AIChatFloating: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   border: m.role !== "user" ? "1px solid var(--color-border)" : "none",
                 }}
               >
-                {m.content}
-              </div>
+              {m.role === "assistant" || m.role === "system" ? (
+                <MarkdownRenderer content={m.content} />
+              ) : (
+                m.content
+              )}
             </div>
-          ))}
-          {loading && <div className="text-xs" style={{ color: "var(--color-text-muted)" }}>Thinking...</div>}
+          </div>
+        ))}
+        {loading && <div className="text-xs" style={{ color: "var(--color-text-muted)" }}>Thinking...</div>}
           <div ref={chatEndRef} />
         </div>
 
