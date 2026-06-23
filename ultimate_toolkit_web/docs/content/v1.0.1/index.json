@@ -1,0 +1,151 @@
+{
+  "version": "v1.0.1",
+  "label": "v1.0.1 (Latest)",
+  "latest": true,
+  "categories": [
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "icon": "&#128640;",
+      "description": "Set up Ultimate Toolkit on your machine",
+      "pages": [
+        { "id": "changelog", "title": "What's New in v1.0.0", "description": "Changelog and release notes for v1.0.0" },
+        {
+          "id": "index",
+          "title": "Overview",
+          "description": "What is Ultimate Toolkit and what can it do"
+        },
+        {
+          "id": "quick-start",
+          "title": "Quick Start",
+          "description": "Download, install, and run in 5 minutes"
+        },
+        {
+          "id": "installation",
+          "title": "Installation",
+          "description": "Detailed installation guide with prerequisites"
+        },
+        {
+          "id": "building-from-source",
+          "title": "Building from Source",
+          "description": "Compile the app yourself with Rust and Node.js"
+        }
+      ]
+    },
+    {
+      "id": "ocr",
+      "title": "OCR Plugin",
+      "icon": "&#128269;",
+      "description": "Text extraction from images and screenshots",
+      "pages": [
+        {
+          "id": "index",
+          "title": "Overview",
+          "description": "How the OCR plugin works"
+        },
+        {
+          "id": "custom-engines",
+          "title": "Custom OCR Engines",
+          "description": "Add PaddleOCR, TrOCR, and other engines"
+        },
+        {
+          "id": "supported-languages",
+          "title": "Supported Languages",
+          "description": "Language packs and how to install them"
+        }
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "title": "AI Chat",
+      "icon": "&#129302;",
+      "description": "Multi-provider AI assistant",
+      "pages": [
+        {
+          "id": "index",
+          "title": "Overview",
+          "description": "Chat with leading AI models from one window"
+        },
+        {
+          "id": "providers",
+          "title": "Provider Setup",
+          "description": "Configure OpenAI, Anthropic, Gemini, and more"
+        },
+        {
+          "id": "configuration",
+          "title": "Configuration",
+          "description": "Customize models, prompts, and behavior"
+        }
+      ]
+    },
+    {
+      "id": "plugins",
+      "title": "Plugin System",
+      "icon": "&#129518;",
+      "description": "Extend the toolkit with custom plugins",
+      "pages": [
+        {
+          "id": "index",
+          "title": "Overview",
+          "description": "Architecture of the plugin system"
+        },
+        {
+          "id": "creating-plugins",
+          "title": "Creating Plugins",
+          "description": "Step-by-step tutorial with Hello World"
+        },
+        {
+          "id": "plugin-api",
+          "title": "Plugin API Reference",
+          "description": "Full API documentation for plugin developers"
+        }
+      ]
+    },
+    {
+      "id": "development",
+      "title": "Development",
+      "icon": "&#128295;",
+      "description": "Contribute to the project",
+      "pages": [
+        {
+          "id": "index",
+          "title": "Overview",
+          "description": "Development workflow and conventions"
+        },
+        {
+          "id": "architecture",
+          "title": "Architecture",
+          "description": "Project structure, Rust backend, React frontend"
+        },
+        {
+          "id": "contributing",
+          "title": "Contributing",
+          "description": "How to submit changes, report bugs, and more"
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "title": "Settings",
+      "icon": "&#9881;&#65039;",
+      "description": "Configure the app to your liking",
+      "pages": [
+        {
+          "id": "index",
+          "title": "Overview",
+          "description": "All available settings at a glance"
+        },
+        {
+          "id": "theme",
+          "title": "Theme & Appearance",
+          "description": "Dark, light, and system themes"
+        },
+        {
+          "id": "updates",
+          "title": "Updates",
+          "description": "Auto-update behavior and release channels"
+        }
+      ]
+    }
+  ]
+}
