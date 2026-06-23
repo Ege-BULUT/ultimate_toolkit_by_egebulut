@@ -10,7 +10,7 @@ Ultimate Toolkit uses a hybrid architecture:
 
 ## Window Architecture
 
-v1.0.0 introduces a multi-window architecture:
+v1.0.1 introduces a multi-window architecture:
 
 - **Main window**: Full app UI (sidebar, plugin manager, settings)
 - **Floating toolbar**: Small always-on-top window with plugin launcher buttons

@@ -24,5 +24,5 @@ Grab the latest installer from the [Releases](https://github.com/Ege-BULUT/ultim
 
 - Configure AI providers in the AI Chat settings
 - Install additional OCR languages
-- Explore the [Plugin API](https://utoolkit.vercel.app/docs/v1.0.0/plugins/plugin-api)
+- Explore the [Plugin API](https://utoolkit.vercel.app/docs/v1.0.1/plugins/plugin-api)
 - Build your own plugin with the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin)
