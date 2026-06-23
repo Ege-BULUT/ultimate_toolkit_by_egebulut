@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { isTauri } from "../utils/tauri";
 
 interface FloatingToolbarProps {
@@ -12,10 +12,10 @@ const TOOLBAR_BUTTONS = [
 ];
 
 /**
- * FloatingToolbar — a small always-on-top window with quick-access buttons
+ * FloatingToolbar - a small always-on-top window with quick-access buttons
  * for each plugin that supports floating UI.
  *
- * Used as a standalone Tauri window (`/?toolbar`) — always on top, minimal chrome.
+ * Used as a standalone Tauri window (`/?toolbar`) - always on top, minimal chrome.
  * Closeable via ✕ button or Escape key.
  */
 const FloatingToolbar: React.FC<FloatingToolbarProps> = ({ onToggle }) => {

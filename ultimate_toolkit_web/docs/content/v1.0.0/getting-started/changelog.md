@@ -1,4 +1,4 @@
-# v1.0.0 — Always-on-top Floating Windows + Toolbar
+﻿# v1.0.0 - Always-on-top Floating Windows + Toolbar
 
 > **Release date:** 2026-06-23
 
@@ -6,7 +6,7 @@
 
 ### 🪟 Always-on-top Floating Windows
 
-Floating UIs (OCR, AI Chat) now open as **separate OS windows** that stay on top of ALL applications — not just the main app window.
+Floating UIs (OCR, AI Chat) now open as **separate OS windows** that stay on top of ALL applications - not just the main app window.
 
 - Each floating window is a native Tauri window with `alwaysOnTop=true`
 - Windows have no title bar for a clean, minimal look
@@ -24,7 +24,7 @@ A small, always-on-top toolbar appears when the app starts, giving you quick acc
 
 ### 🔘 Pop Out Button
 
-Every plugin config page now has a **Pop Out ↗** button that opens the plugin's floating UI as a separate always-on-top window.
+Every plugin config page now has a **Pop Out �-** button that opens the plugin's floating UI as a separate always-on-top window.
 
 ### 📦 NSIS Installer
 
@@ -93,8 +93,8 @@ New `template/example-plugin` branch provides a complete boilerplate for plugin 
 
 Planned for future releases:
 
-- **Screen capture** — native Windows region capture
-- **GitHub plugin browser** — Install plugins directly from GitHub
-- **Multi-engine OCR** — PaddleOCR, TrOCR support
-- **Plugin hot-reload** — dev mode auto-reload
-- **Code signing** — Windows SmartScreen certification
+- **Screen capture** - native Windows region capture
+- **GitHub plugin browser** - Install plugins directly from GitHub
+- **Multi-engine OCR** - PaddleOCR, TrOCR support
+- **Plugin hot-reload** - dev mode auto-reload
+- **Code signing** - Windows SmartScreen certification

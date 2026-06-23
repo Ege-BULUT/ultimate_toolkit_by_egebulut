@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import { PluginRegistry } from "./PluginRegistry";
 import { PluginCard } from "../../components/PluginCard";
 import { CustomPluginLoader } from "../../components/CustomPluginLoader";
@@ -12,7 +12,7 @@ interface PluginManagerProps {
 }
 
 /**
- * Plugin Manager — lists all available plugins with toggle/configure.
+ * Plugin Manager - lists all available plugins with toggle/configure.
  */
 export const PluginManager: React.FC<PluginManagerProps> = ({
   activePlugins,
@@ -53,7 +53,7 @@ export const PluginManager: React.FC<PluginManagerProps> = ({
       {plugins.length === 0 && (
         <div className="text-center py-12">
           <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
-            No plugins loaded. This is unusual — try restarting the app.
+            No plugins loaded. This is unusual - try restarting the app.
           </p>
         </div>
       )}

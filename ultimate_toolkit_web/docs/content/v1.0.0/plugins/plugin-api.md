@@ -1,4 +1,4 @@
-Full API reference for building plugins for Ultimate Toolkit.
+﻿Full API reference for building plugins for Ultimate Toolkit.
 
 ## PluginDefinition
 
@@ -247,7 +247,7 @@ Features:
 - GitHub Flavored Markdown (tables, strikethrough, task lists)
 - Automatic line breaks
 - Syntax-highlighted code blocks (via CSS)
-- Safe for trusted content (no sanitizer — designed for local app use)
+- Safe for trusted content (no sanitizer - designed for local app use)
 
 ## useConversation
 
@@ -455,7 +455,7 @@ export default class MyPlugin extends PluginBase {
 
 ## Best Practices
 
-- **Use `onActivate` for setup**, `onDeactivate` for cleanup — never rely on constructor/destructor
+- **Use `onActivate` for setup**, `onDeactivate` for cleanup - never rely on constructor/destructor
 - **Wrap your Config and Floating components** with `<ErrorBoundary>` for crash isolation
 - **Use the Storage API** instead of raw localStorage for settings persistence
 - **Use semantic versioning** for your plugin's `version` field

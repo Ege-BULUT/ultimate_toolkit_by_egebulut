@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { PluginBase } from "../core/PluginBase";
 import type { PluginDefinition, ChatMessage, ChatResponse, OllamaModel } from "../../types";
 import { AI_PROVIDERS } from "../../types";
@@ -175,7 +175,7 @@ export const AIChatConfig: React.FC = () => {
           throw new Error("Failed to get response from backend");
         }
       } else {
-        // Browser dev mode — simulate
+        // Browser dev mode - simulate
         response = {
           content: `[${provider?.name ?? selectedProvider}] This is a simulated response. The app uses the Rust backend via Tauri for real AI calls.\n\nYour message: "${input}"\n\nIn the desktop app, this would be processed by ${config.selectedModel || provider?.models[0] || "the selected model"}.`,
           model: config.selectedModel || "dev-mode",
@@ -338,7 +338,7 @@ export const AIChatConfig: React.FC = () => {
                       border: "1px solid var(--color-border)",
                     }}
                   >
-                    Get Key ↗
+                    Get Key �-
                   </a>
                 </Tooltip>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+﻿import React, { useState, useCallback, useEffect } from "react";
 import { Sidebar, type Page } from "./components/Sidebar";
 import { PluginManager } from "./plugins/core/PluginManager";
 import { SettingsPanel } from "./components/SettingsPanel";
@@ -202,7 +202,7 @@ const App: React.FC = () => {
                           border: "1px solid var(--color-accent)",
                         }}
                       >
-                        Pop Out ↗
+                        Pop Out �-
                       </button>
                     </Tooltip>
                   )}
@@ -261,9 +261,9 @@ const App: React.FC = () => {
       {/* Floating Windows */}
       {renderFloatingUIs()}
 
-      {/* Floating Buttons — moved to FloatingToolbar window */}
+      {/* Floating Buttons - moved to FloatingToolbar window */}
 
-      {/* Welcome / Onboarding — shows only on first visit */}
+      {/* Welcome / Onboarding - shows only on first visit */}
       <Welcome onDismiss={() => {}} />
 
       {/* Debug Panel */}

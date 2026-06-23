@@ -1,8 +1,8 @@
-# Test Results & Coverage Audit
+﻿# Test Results & Coverage Audit
 
 > Tarih: 2026-06-23 (güncellendi)
 > Branch: DEV
-> Test: 22 files, 182 tests — **182/182 passed**
+> Test: 22 files, 182 tests - **182/182 passed**
 
 ---
 
@@ -30,7 +30,7 @@
 | 16 | `storage.test.ts` | 8 | ✅ 4 edge case (missing key, invalid JSON, localStorage unavailable) |
 | 17 | `tauri.test.ts` | 4 | ✅ 1 edge case (missing __TAURI_INTERNALS__) |
 
-### ❌ Test Edilmeyen Dosyalar~~ (5 files — gaps)~~ → **✅ Tümü eklendi, 182/182 geçiyor**
+### ❌ Test Edilmeyen Dosyalar~~ (5 files - gaps)~~ → **✅ Tümü eklendi, 182/182 geçiyor**
 
 ~~| # | Dosya | LOC | Complexity | Test Gerekiyor mu? |~~
 ~~|---|-------|-----|-----------|-------------------|~~
@@ -54,7 +54,7 @@
 
 ---
 
-## 2. Eksik Testler — Detay
+## 2. Eksik Testler - Detay
 
 ### 2.1. `SettingsPanel.tsx` (171 satır)
 
@@ -91,7 +91,7 @@
 | 5 | `enabled=false` iken auto-check tetiklenmez | effect | |
 | 6 | `notifiedRef` tek seferlik guard çalışır | edge case | ikinci enabled=true tetiklemez |
 
-### 2.3. `plugins/ocr/index.tsx` (287 satır — 2 component)
+### 2.3. `plugins/ocr/index.tsx` (287 satır - 2 component)
 
 **Ne yapar:** `OCRPlugin` class, `OCRConfig` component (language selector + OCR butonları + result), `OCRFloating` component.
 
@@ -119,7 +119,7 @@
 | 3 | Result gösterilir | render | |
 | 4 | onClose callback çalışır | interaction | |
 
-### 2.4. `plugins/ai_chat/index.tsx` (648 satır — 2 component)
+### 2.4. `plugins/ai_chat/index.tsx` (648 satır - 2 component)
 
 **Ne yapar:** `AIChatPlugin` class, `AIChatConfig` component (provider seçimi, API key input, model seçici, chat UI), `AIChatFloating` component.
 
@@ -197,7 +197,7 @@ Bu en karmaşık component. Test senaryoları:
 ## 4. Test Configuration
 
 ```json
-// vitest.config.ts — mevcut
+// vitest.config.ts - mevcut
 {
   "environment": "jsdom",
   "globals": true,
@@ -206,7 +206,7 @@ Bu en karmaşık component. Test senaryoları:
 ```
 
 Not: Test'ler `jsdom` environment'ında çalışıyor, `localStorage` mock'u `setup.ts`'de yapılıyor.
-Tauri API'leri (`@tauri-apps/api/core`) için dynamic import mock'u gerekli — mevcut testlerde `isTauri()`=false (browser mode) ile bypass ediliyor.
+Tauri API'leri (`@tauri-apps/api/core`) için dynamic import mock'u gerekli - mevcut testlerde `isTauri()`=false (browser mode) ile bypass ediliyor.
 
 ---
 

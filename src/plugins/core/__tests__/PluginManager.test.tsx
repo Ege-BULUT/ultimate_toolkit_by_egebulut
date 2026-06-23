@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+﻿import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { PluginManager } from "../PluginManager";
 import { PluginRegistry } from "../PluginRegistry";
@@ -83,7 +83,7 @@ describe("PluginManager", () => {
       />
     );
 
-    // PluginCard renders a toggle — find and click it
+    // PluginCard renders a toggle - find and click it
     const toggle = screen.getByRole("checkbox");
     fireEvent.click(toggle);
     expect(onToggle).toHaveBeenCalledWith("test_plugin", true);

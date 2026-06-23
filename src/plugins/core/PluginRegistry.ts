@@ -1,4 +1,4 @@
-import { PluginBase } from "./PluginBase";
+﻿import { PluginBase } from "./PluginBase";
 import type { PluginDefinition } from "../../types";
 
 /**
@@ -11,7 +11,7 @@ class PluginRegistryClass {
   /** Register a plugin instance */
   register(plugin: PluginBase): void {
     if (this.plugins.has(plugin.id)) {
-      console.warn(`Plugin "${plugin.id}" already registered — skipping`);
+      console.warn(`Plugin "${plugin.id}" already registered - skipping`);
       return;
     }
     this.plugins.set(plugin.id, plugin);

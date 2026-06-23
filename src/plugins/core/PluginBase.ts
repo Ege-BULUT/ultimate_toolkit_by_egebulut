@@ -1,4 +1,4 @@
-import type { PluginDefinition } from "../../types";
+﻿import type { PluginDefinition } from "../../types";
 
 /**
  * Base class for all plugins in the toolkit.
@@ -15,7 +15,7 @@ export abstract class PluginBase {
   /** Called when plugin is deactivated (toggle OFF) */
   abstract onDeactivate(): void | Promise<void>;
 
-  /** Unique plugin identifier — matches `id` in definition */
+  /** Unique plugin identifier - matches `id` in definition */
   get id(): string {
     return this.definition.id;
   }

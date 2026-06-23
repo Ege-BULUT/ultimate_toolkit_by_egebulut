@@ -1,6 +1,6 @@
-import "@testing-library/jest-dom/vitest";
+﻿import "@testing-library/jest-dom/vitest";
 
-// jsdom doesn't implement matchMedia — needed by useTheme hook
+// jsdom doesn't implement matchMedia - needed by useTheme hook
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
@@ -15,7 +15,7 @@ Object.defineProperty(window, "matchMedia", {
   }),
 });
 
-// jsdom doesn't implement scrollIntoView — needed by AI Chat scroll effect
+// jsdom doesn't implement scrollIntoView - needed by AI Chat scroll effect
 Element.prototype.scrollIntoView = () => {};
 
 // Mock PointerEvent for FloatingWindow resize handle

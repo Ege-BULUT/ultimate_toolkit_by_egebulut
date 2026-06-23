@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Tooltip } from "./Tooltip";
 
 export type Page = "plugins" | "settings" | string;
@@ -59,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </p>
 
         {pluginList.map((p) => (
-          <Tooltip key={p.id} text={activePlugins.has(p.id) ? `${p.name} — Active` : `${p.name} — Click to configure`}>
+          <Tooltip key={p.id} text={activePlugins.has(p.id) ? `${p.name} - Active` : `${p.name} - Click to configure`}>
             <button
               onClick={() => onNavigate(p.id)}
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
@@ -92,7 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="my-3 border-t" style={{ borderColor: "var(--color-border)" }} />
 
-        <Tooltip text="Application settings — theme, updates, and preferences">
+        <Tooltip text="Application settings - theme, updates, and preferences">
           <button
             onClick={() => onNavigate("settings")}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
