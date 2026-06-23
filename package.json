@@ -1,6 +1,6 @@
 {
   "name": "ultimate-toolkit-by-egebulut",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Modern open-source Windows utility toolkit — plugins for OCR, AI Chat, and more",
   "private": true,
   "type": "module",
