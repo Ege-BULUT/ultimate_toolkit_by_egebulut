@@ -345,11 +345,17 @@ export const OCRFloating: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const ocrBase64 = async (base64: string, label: string) => {
     setResult(`Processing ${label}...`);
-    const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang, engine });
-    if (res && res.text) {
-      setResult(`🔍 OCR Result (${Math.round(res.confidence * 100)}%):\n\n${res.text}`);
-    } else {
-      setResult("No text found in the image.");
+    try {
+      const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang, engine });
+      if (res && res.text) {
+        setResult(`OCR Result (${Math.round(res.confidence * 100)}%):\n\n${res.text}`);
+      } else if (res) {
+        setResult("No text found in the image.");
+      } else {
+        setResult("OCR failed. If you are in browser mode, OCR requires the desktop app. If in the desktop app, ensure Tesseract is installed.");
+      }
+    } catch (err) {
+      setResult(`Error: ${err instanceof Error ? err.message : String(err)}`);
     }
   };
 

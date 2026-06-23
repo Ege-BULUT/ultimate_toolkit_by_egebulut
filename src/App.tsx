@@ -8,10 +8,9 @@ import { AIChatPlugin } from "./plugins/ai_chat";
 import { useTheme } from "./hooks/useTheme";
 import { useSettings } from "./hooks/useSettings";
 import { useAutoUpdate } from "./hooks/useAutoUpdate";
-import { OCRConfig, OCRFloating } from "./plugins/ocr";
-import { AIChatConfig, AIChatFloating } from "./plugins/ai_chat";
+import { OCRConfig } from "./plugins/ocr";
+import { AIChatConfig } from "./plugins/ai_chat";
 import { Tooltip } from "./components/Tooltip";
-import { ErrorBoundary } from "./plugins/core/ErrorBoundary";
 import { Welcome } from "./components/Welcome";
 import { DebugPanel } from "./components/DebugPanel";
 import type { Theme } from "./types";
@@ -31,7 +30,6 @@ const App: React.FC = () => {
   const { updateInfo, checking: checkingUpdate, checkForUpdates } = useAutoUpdate(settings.auto_update);
 
   const [activePage, setActivePage] = useState<Page>("plugins");
-  const [floatingUIs, setFloatingUIs] = useState<Set<string>>(new Set());
   const [showDebug, setShowDebug] = useState(false);
 
   // Spawn the always-on-top floating toolbar on app start (Tauri only)
@@ -63,14 +61,6 @@ const App: React.FC = () => {
   const handleTogglePlugin = useCallback(
     (id: string, active: boolean) => {
       togglePlugin(id, active);
-      if (!active) {
-        // Close floating UI when deactivated
-        setFloatingUIs((prev) => {
-          const next = new Set(prev);
-          next.delete(id);
-          return next;
-        });
-      }
     },
     [togglePlugin]
   );
@@ -80,28 +70,10 @@ const App: React.FC = () => {
   }, []);
 
   const handleToggleFloating = useCallback((id: string) => {
-    setFloatingUIs((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
-
-  const handleCloseFloating = useCallback((id: string) => {
-    setFloatingUIs((prev) => {
-      const next = new Set(prev);
-      next.delete(id);
-      return next;
-    });
-  }, []);
-
-  const handlePopOut = useCallback(async (id: string) => {
     if (isTauri()) {
-      try {
-        const { invoke } = await import("@tauri-apps/api/core");
-        await invoke("create_floating_window", { pluginId: id });
-      } catch {}
+      import("@tauri-apps/api/core").then((mod) => {
+        mod.invoke("create_floating_window", { pluginId: id }).catch(() => {});
+      });
     }
   }, []);
 
@@ -145,7 +117,6 @@ const App: React.FC = () => {
     if (ConfigComponent) {
       const pluginDef = PluginRegistry.get(activePage);
       return (
-        <ErrorBoundary key={activePage}>
         <div>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -174,37 +145,25 @@ const App: React.FC = () => {
 
               {pluginDef?.definition.hasFloatingUI && activePlugins.has(activePage) && (
                 <div className="flex items-center gap-2">
-                  <Tooltip text={floatingUIs.has(activePage) ? "Hide floating window" : "Show floating window"}>
-                    <button
-                      onClick={() => handleToggleFloating(activePage)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-medium"
-                      style={{
-                        background: floatingUIs.has(activePage)
-                          ? "var(--color-accent)"
-                          : "var(--color-surface-hover)",
-                        color: floatingUIs.has(activePage)
-                          ? "#fff"
-                          : "var(--color-text-primary)",
-                        border: "1px solid var(--color-border)",
-                      }}
-                    >
-                      {floatingUIs.has(activePage) ? "Hide Floating" : "Floating Window"}
-                    </button>
-                  </Tooltip>
                   {isTauri() && (
                     <Tooltip text="Open in a separate always-on-top window">
                       <button
-                        onClick={() => handlePopOut(activePage)}
+                        onClick={() => handleToggleFloating(activePage)}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium"
                         style={{
-                          background: "transparent",
-                          color: "var(--color-accent)",
-                          border: "1px solid var(--color-accent)",
+                          background: "var(--color-accent)",
+                          color: "#fff",
+                          border: "none",
                         }}
                       >
-                        Pop Out �-
+                        Open Floating Window
                       </button>
                     </Tooltip>
+                  )}
+                  {!isTauri() && (
+                    <span className="text-xs" style={{ color: "var(--color-text-muted)" }}>
+                      Floating UI available in desktop app
+                    </span>
                   )}
                 </div>
               )}
@@ -212,7 +171,6 @@ const App: React.FC = () => {
           </div>
           <ConfigComponent />
         </div>
-        </ErrorBoundary>
       );
     }
 
@@ -220,28 +178,6 @@ const App: React.FC = () => {
   };
 
   // ── Render floating UIs ───────────────────────────────────
-
-  const renderFloatingUIs = () => {
-    const elements: React.ReactNode[] = [];
-
-    if (floatingUIs.has("ocr") && activePlugins.has("ocr")) {
-      elements.push(
-        <ErrorBoundary key="ocr-floating-eb">
-          <OCRFloating onClose={() => handleCloseFloating("ocr")} />
-        </ErrorBoundary>
-      );
-    }
-
-    if (floatingUIs.has("ai_chat") && activePlugins.has("ai_chat")) {
-      elements.push(
-        <ErrorBoundary key="ai-chat-floating-eb">
-          <AIChatFloating onClose={() => handleCloseFloating("ai_chat")} />
-        </ErrorBoundary>
-      );
-    }
-
-    return elements;
-  };
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
@@ -257,9 +193,6 @@ const App: React.FC = () => {
       <main className="flex-1 overflow-y-auto p-6" style={{ background: "var(--color-surface)" }}>
         {renderContent()}
       </main>
-
-      {/* Floating Windows */}
-      {renderFloatingUIs()}
 
       {/* Floating Buttons - moved to FloatingToolbar window */}
 

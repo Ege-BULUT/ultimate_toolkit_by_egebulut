@@ -10,6 +10,8 @@ const FloatingApp: React.FC<FloatingAppProps> = ({ pluginId }) => {
   const [loaded, setLoaded] = useState(false);
   const titleRef = useRef<HTMLDivElement>(null);
 
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   const title = pluginId === "ocr" ? "OCR" : pluginId === "ai_chat" ? "AI Chat" : pluginId;
 
   useEffect(() => {
@@ -36,9 +38,8 @@ const FloatingApp: React.FC<FloatingAppProps> = ({ pluginId }) => {
   }, [pluginId]);
 
   useEffect(() => {
-    if (titleRef.current) {
-      titleRef.current.style.setProperty("-webkit-app-region", "drag");
-    }
+    if (titleRef.current) titleRef.current.style.setProperty("-webkit-app-region", "drag");
+    if (closeRef.current) closeRef.current.style.setProperty("-webkit-app-region", "no-drag");
   });
 
   const handleClose = () => {
@@ -53,7 +54,7 @@ const FloatingApp: React.FC<FloatingAppProps> = ({ pluginId }) => {
     <div style={styles.wrapper}>
       <div ref={titleRef} style={styles.titleBar}>
         <span style={styles.title}>{title}</span>
-        <button onClick={handleClose} style={styles.closeBtn}>X</button>
+        <button ref={closeRef} onClick={handleClose} style={styles.closeBtn}>X</button>
       </div>
       <div style={Component ? styles.body : styles.bodyCenter}>
         {Component ? (
