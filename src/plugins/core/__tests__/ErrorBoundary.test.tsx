@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+﻿import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ErrorBoundary } from "../ErrorBoundary";
 
@@ -93,11 +93,11 @@ describe("ErrorBoundary", () => {
 
     expect(screen.getByText(/Plugin crashed/)).toBeInTheDocument();
 
-    // Click retry — errors are caught so the retry sets state back
+    // Click retry - errors are caught so the retry sets state back
     fireEvent.click(screen.getByText("Retry"));
 
     // The child will throw again, so we still see the error UI
-    // This is expected — this tests the button exists and works
+    // This is expected - this tests the button exists and works
     expect(screen.getByText("Retry")).toBeInTheDocument();
     spy.mockRestore();
   });

@@ -1,8 +1,8 @@
-# Development Lifecycle
+﻿# Development Lifecycle
 
 > **Purpose**: This document defines the step-by-step workflow that Sisyphus (AI development agent) MUST follow when implementing any feature, fix, or change in this project.
 >
-> **Audience**: Sisyphus (the AI agent). Written in imperative tone — Sisyphus executes, does not "check" or "ask".
+> **Audience**: Sisyphus (the AI agent). Written in imperative tone - Sisyphus executes, does not "check" or "ask".
 >
 > **Enforcement**: This lifecycle is MANDATORY. Skipping steps, reordering, merging steps, or treating them as optional is a violation.
 
@@ -10,7 +10,7 @@
 
 ## The 8-Step Cycle
 
-### Step 0 — Receive Instruction
+### Step 0 - Receive Instruction
 
 The user provides a task. Read it carefully. Identify:
 - **Goal**: What is the desired end state?
@@ -18,11 +18,11 @@ The user provides a task. Read it carefully. Identify:
 - **Constraints**: Any specific tech, pattern, or style requirements?
 - **Success criteria**: How will we know it's done?
 
-Do NOT start implementation yet. Do NOT ask the user for a plan — that is YOUR job.
+Do NOT start implementation yet. Do NOT ask the user for a plan - that is YOUR job.
 
 ---
 
-### Step 1 — Research
+### Step 1 - Research
 
 Investigate the codebase to understand current state before making any changes.
 
@@ -33,57 +33,57 @@ Investigate the codebase to understand current state before making any changes.
 - If an external library/framework is involved → fire `librarian` to find best practices and real-world usage.
 - If the change spans 2+ modules → fire `explore` agents for discovery.
 
-**Stop condition:** You can name every file you will create or modify, and you understand how they connect. Do NOT over-research — sufficient > complete.
+**Stop condition:** You can name every file you will create or modify, and you understand how they connect. Do NOT over-research - sufficient > complete.
 
 **Output:** A concise research summary: "Found X files impacted: [list]. Pattern used: [description]. Risk: [none/low/medium]."
 
 ---
 
-### Step 2 — Plan (with Multi-Alternative Re-Ranking)
+### Step 2 - Plan (with Multi-Alternative Re-Ranking)
 
-Design the implementation. Do NOT skip to one solution — generate alternatives and rank them.
+Design the implementation. Do NOT skip to one solution - generate alternatives and rank them.
 
 **Mandatory sub-steps:**
 
-1. **List 2–3 approaches** — different architectures, different tradeoffs. Briefly describe each.
-2. **Re-rank** — evaluate each approach against:
+1. **List 2–3 approaches** - different architectures, different tradeoffs. Briefly describe each.
+2. **Re-rank** - evaluate each approach against:
    - **Simplicity** (lowest complexity wins)
    - **Maintainability** (easiest to understand later)
    - **Consistency** (matches codebase patterns)
    - **Performance** (if relevant)
    - **Risk** (fewest unknowns)
-3. **User consultation gate** — Before finalizing, evaluate whether any decision in this plan would benefit from user input. Consult the user when:
+3. **User consultation gate** - Before finalizing, evaluate whether any decision in this plan would benefit from user input. Consult the user when:
    - **Architecture choice** affects future extensibility (e.g., monorepo vs multi-repo, database choice, state management strategy).
    - **UX/design tradeoff** has no obviously correct answer (e.g., modal vs inline editing, two different layouts).
-   - **Scope ambiguity** — the requirement could mean 2 different things with 2x+ effort difference.
+   - **Scope ambiguity** - the requirement could mean 2 different things with 2x+ effort difference.
    - **New dependency** would be introduced that isn't trivial.
-   - **Non-obvious risk** — one approach is safer but slower, another faster but riskier.
+   - **Non-obvious risk** - one approach is safer but slower, another faster but riskier.
 
    **How to consult:**
    ```
    Konu: [brief topic title]
    Durum: [one-line context]
    Seçenekler:
-   1. [Option A] — [advantage: X] / [disadvantage: Y]
-   2. [Option B] — [advantage: X] / [disadvantage: Y]
-   Önerim: [Option X] — [short reason]
+   1. [Option A] - [advantage: X] / [disadvantage: Y]
+   2. [Option B] - [advantage: X] / [disadvantage: Y]
+   Önerim: [Option X] - [short reason]
    Nasıl devam edelim?
    ```
 
    If no decision meets the threshold, proceed automatically. Do NOT consult for trivial details (variable names, formatting, file organization).
 
-4. **Select** — choose the highest-ranked approach. If user input was obtained, incorporate it. If two are tied and no user input, pick the simpler one.
-5. **Break down** — list concrete implementation steps (order matters — dependencies first).
+4. **Select** - choose the highest-ranked approach. If user input was obtained, incorporate it. If two are tied and no user input, pick the simpler one.
+5. **Break down** - list concrete implementation steps (order matters - dependencies first).
 
 **Output:** A structured plan with chosen approach, rejected alternatives with brief reasoning, and ordered step list.
 
-**Exception:** For truly trivial changes (single-line fix, typo), the entire user consultation gate is skipped — compress the whole step to one sentence: "Plan: [single approach]".
+**Exception:** For truly trivial changes (single-line fix, typo), the entire user consultation gate is skipped - compress the whole step to one sentence: "Plan: [single approach]".
 
 **Exception:** For truly trivial changes (single-line fix, typo), this step compresses to one sentence: "Plan: [single approach]".
 
 ---
 
-### Step 3 — Backup
+### Step 3 - Backup
 
 Before touching ANY file, backup every file that will be changed.
 
@@ -99,7 +99,7 @@ Before touching ANY file, backup every file that will be changed.
 
 ---
 
-### Step 4 — Implement (Change → Test → Pass → Next)
+### Step 4 - Implement (Change → Test → Pass → Next)
 
 This is the core loop. Each unit of work follows this exact sub-cycle:
 
@@ -122,8 +122,8 @@ This is the core loop. Each unit of work follows this exact sub-cycle:
 └────────────────────────────────────────────────────┘
 ```
 
-**Hard rules — NEVER violate:**
-- **No mocks.** Tests must use real implementations. If a dependency is expensive (e.g., hardware API), abstract with a thin trait/interface that has a real test implementation — not a mock framework.
+**Hard rules - NEVER violate:**
+- **No mocks.** Tests must use real implementations. If a dependency is expensive (e.g., hardware API), abstract with a thin trait/interface that has a real test implementation - not a mock framework.
 - **No placeholders.** `TODO`, `FIXME`, `pass`, `return None`, `throw new Error("not implemented")` are forbidden in delivered code. Every line must be real.
 - **No workarounds.** If a test fails, fix the ROOT CAUSE. Do not change the test. Do not add `@ts-ignore`, `# type: ignore`, `as any`, or any suppression. Do not skip assertions.
 - **One unit at a time.** Do not write 5 functions then write 5 tests. Function → test → pass → next function.
@@ -134,7 +134,7 @@ This is the core loop. Each unit of work follows this exact sub-cycle:
 
 ---
 
-### Step 5 — Update TODO.md
+### Step 5 - Update TODO.md
 
 After all implementation is complete and all tests pass:
 
@@ -145,7 +145,7 @@ After all implementation is complete and all tests pass:
 
 ---
 
-### Step 6 — Update Version & Release Artifacts
+### Step 6 - Update Version & Release Artifacts
 
 Update everything that reflects the current state of the project:
 
@@ -163,7 +163,7 @@ Update everything that reflects the current state of the project:
 
 ---
 
-### Step 7 — Report
+### Step 7 - Report
 
 Deliver a structured report to the user.
 
@@ -174,13 +174,13 @@ Deliver a structured report to the user.
 [1–2 sentences on what was done]
 
 ## Changes
-- [file path] — [what changed]
+- [file path] - [what changed]
 
 ## Tests
 [N] tests written. All pass.
 
 ## Verification
-[How you verified — build output, live URL check, etc.]
+[How you verified - build output, live URL check, etc.]
 
 ## Notes
 [Anything unusual, tech debt incurred, future considerations]
@@ -251,15 +251,15 @@ User instruction
 
 ---
 
-## Quick Reference — One-Line Per Step
+## Quick Reference - One-Line Per Step
 
 | Step | One-liner |
 |------|-----------|
-| 0 | Understand the instruction — goal, scope, constraints |
+| 0 | Understand the instruction - goal, scope, constraints |
 | 1 | Read all impacted files + patterns + dependencies |
 | 2 | Generate 2-3 alternatives, re-rank, **consult user on tradeoffs**, select best, break into ordered steps |
 | 3 | `Copy-Item` every file-to-change into `backups/v<version>/` |
 | 4 | For each unit: write code → write test → test passes (no mocks/placeholders/workarounds) → next |
-| 5 | Update TODO.md — check done, add discovered items |
+| 5 | Update TODO.md - check done, add discovered items |
 | 6 | Bump version → README → website → docs → changelog |
 | 7 | Deliver structured report to user |

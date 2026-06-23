@@ -1,4 +1,4 @@
-# Quick Start
+﻿# Quick Start
 
 Get Ultimate Toolkit running in 5 minutes.
 
@@ -9,10 +9,10 @@ Grab the latest installer from the [Releases](https://github.com/Ege-BULUT/ultim
 ## First Run
 
 1. Launch Ultimate Toolkit
-2. A **floating toolbar** appears at the top of your screen — use it for quick access to floating tools
+2. A **floating toolbar** appears at the top of your screen - use it for quick access to floating tools
 3. The main window opens to the **Plugin Manager**
 4. Toggle the **OCR** or **AI Chat** plugins on
-5. Open the **floating window** for any plugin — it stays on top of ALL your windows
+5. Open the **floating window** for any plugin - it stays on top of ALL your windows
 
 ## Try It Out
 

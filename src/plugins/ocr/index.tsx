@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+﻿import React, { useEffect, useState, useRef } from "react";
 import { PluginBase } from "../core/PluginBase";
 import type { PluginDefinition } from "../../types";
 import { isTauri, tryInvoke } from "../../utils/tauri";
@@ -219,7 +219,7 @@ export const OCRConfig: React.FC = () => {
           >
             {languages.map((l) => (
               <option key={l.code} value={l.code}>
-                {l.name} ({l.code}) {l.installed ? "✓" : "— not installed"}
+                {l.name} ({l.code}) {l.installed ? "✓" : "- not installed"}
               </option>
             ))}
             {languages.length === 0 && (

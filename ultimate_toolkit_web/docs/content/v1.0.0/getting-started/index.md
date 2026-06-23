@@ -1,4 +1,4 @@
-# Getting Started
+﻿# Getting Started
 
 Welcome to Ultimate Toolkit v1.0.0! This guide will help you get up and running quickly.
 
@@ -7,9 +7,9 @@ Welcome to Ultimate Toolkit v1.0.0! This guide will help you get up and running 
 Ultimate Toolkit is an open-source Windows utility toolkit built with Rust and React. It provides a growing ecosystem of plugins for productivity tasks like OCR text extraction, AI chat, and more.
 
 **What makes it special:**
-- **Floating windows** — plugin UIs open as separate always-on-top windows, usable on any screen
-- **Modular plugins** — each tool is a plugin you can enable/disable independently
-- **Native performance** — built with Tauri (Rust + WebView2), not Electron
+- **Floating windows** - plugin UIs open as separate always-on-top windows, usable on any screen
+- **Modular plugins** - each tool is a plugin you can enable/disable independently
+- **Native performance** - built with Tauri (Rust + WebView2), not Electron
 
 ## Key Features in v1.0.0
 

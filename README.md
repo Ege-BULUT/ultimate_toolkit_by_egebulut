@@ -1,4 +1,4 @@
-# Ultimate Toolkit by EgeBulut 🛠️
+﻿# Ultimate Toolkit by EgeBulut 🛠️
 
 **A modern, open-source Windows utility toolkit**, inspired by Microsoft PowerToys, built with [Tauri](https://tauri.app) + [React](https://react.dev) + [Rust](https://www.rust-lang.org/).
 
@@ -30,7 +30,7 @@ Chat with leading AI models, all from one floating window.
 - Toggle plugins on/off individually
 - Each plugin has its own configuration page
 - Floating window support for quick access
-- Crash isolation via ErrorBoundary — one bad plugin won't break the app
+- Crash isolation via ErrorBoundary - one bad plugin won't break the app
 - Load custom plugins from `.js`/`.mjs` files without recompiling
 - Write your own plugins! ([Guide](https://utoolkit.vercel.app/docs/custom-plugins))
 - Clone the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin) for a boilerplate starter
@@ -73,7 +73,7 @@ You can also manually trigger a build from the Actions tab (`workflow_dispatch`)
 
 ---
 
-## 🏗️ Project Structure
+## �-️ Project Structure
 
 ```
 ultimate_toolkit_by_egebulut/
@@ -119,7 +119,7 @@ npm run tauri:build
 | `feat/*` | Feature branches → PR to DEV |
 | `template/example-plugin` | Boilerplate for plugin developers |
 
-Release builds are triggered by pushing a `v*` tag — see `.github/workflows/release.yml`.
+Release builds are triggered by pushing a `v*` tag - see `.github/workflows/release.yml`.
 
 ---
 
@@ -137,7 +137,7 @@ MIT © [Ege Bulut](https://github.com/egebulut). See [LICENSE](./LICENSE).
 
 ---
 
-## 🔗 Links
+## �- Links
 
 - [Website](https://utoolkit.vercel.app)
 - [GitHub](https://github.com/egebulut/ultimate_toolkit_by_egebulut)

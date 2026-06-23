@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+﻿import React, { useState, useRef } from "react";
 
 interface TooltipProps {
   text: string;
@@ -7,7 +7,7 @@ interface TooltipProps {
 }
 
 /**
- * Hover tooltip — shows helpful hints on any element.
+ * Hover tooltip - shows helpful hints on any element.
  * Beginner-friendly: every interactive element should use this.
  */
 export const Tooltip: React.FC<TooltipProps> = ({ text, children, delay = 300 }) => {

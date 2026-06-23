@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+﻿import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SettingsPanel } from "../SettingsPanel";
 import type { Theme } from "../../types";
@@ -109,7 +109,7 @@ describe("SettingsPanel", () => {
 
   it("renders Tooltip wrapper on theme buttons", () => {
     render(<SettingsPanel {...defaultProps} />);
-    // Tooltip text appears on hover — verify the button has a wrapping element
+    // Tooltip text appears on hover - verify the button has a wrapping element
     expect(screen.getByText("Light")).toBeTruthy();
     expect(screen.getByText("Dark")).toBeTruthy();
     expect(screen.getByText("System")).toBeTruthy();

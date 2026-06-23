@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ interface State {
 }
 
 /**
- * Plugin error boundary — catches render errors in plugin components
+ * Plugin error boundary - catches render errors in plugin components
  * so a single broken plugin doesn't take down the whole app.
  */
 export class ErrorBoundary extends React.Component<Props, State> {

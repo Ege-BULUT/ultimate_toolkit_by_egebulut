@@ -1,12 +1,12 @@
-# OCR Plugin
+﻿# OCR Plugin
 
 Extract text from images, screenshots, and screen regions.
 
 ## Features
 
 - **15+ languages** with Tesseract OCR
-- **Clipboard paste** — recognize text from your clipboard
-- **Region capture** — select any area on screen
+- **Clipboard paste** - recognize text from your clipboard
+- **Region capture** - select any area on screen
 - **Multi-engine** support (Tesseract, PaddleOCR, TrOCR)
 
 ## How to Use

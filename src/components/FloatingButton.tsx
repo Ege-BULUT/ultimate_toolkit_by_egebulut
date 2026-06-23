@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+﻿import React, { useState, useCallback } from "react";
 import { Tooltip } from "./Tooltip";
 
 interface FloatingButtonProps {
@@ -11,7 +11,7 @@ interface FloatingButtonProps {
 /**
  * A circular floating action button that appears on screen.
  * Used by plugins like OCR and AI Chat.
- * Draggable — user can reposition it.
+ * Draggable - user can reposition it.
  */
 export const FloatingButton: React.FC<FloatingButtonProps> = ({
   icon,
