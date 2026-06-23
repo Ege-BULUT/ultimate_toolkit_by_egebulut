@@ -1,7 +1,7 @@
 {
   "version": "v1.0.2",
-  "label": "v1.0.2 (Latest)",
-  "latest": true,
+  "label": "v1.0.2",
+  "latest": false,
   "categories": [
     {
       "id": "getting-started",

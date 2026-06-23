@@ -1,4 +1,4 @@
-﻿# v1.1.0 - Python Plugin Support
+# v1.1.0 - Python Plugin Support
 
 > **Release date:** 2026-06-24
 
@@ -8,22 +8,22 @@
 
 Ultimate Toolkit can now run **Python scripts as native plugins**. The Rust backend launches Python as a child process, enabling the entire Python ecosystem for plugin development:
 
-- **PythonPluginBase** — new frontend base class for Python plugins with `onActivate()` (spawn) and `onDeactivate()` (kill)
-- **Python process management** — `launch_python_plugin`, `stop_python_plugin`, `list_python_plugins`, `is_python_plugin_running` Tauri commands with `HashMap<String, Child>` tracking
-- **Automatic Python discovery** — checks `python`, `python3`, `py`, common Windows install paths (`C:\Python3xx`, `AppData\Local\Programs\Python`)
-- **Script resolution** — finds plugin scripts in resource dir, CARGO_MANIFEST_DIR, or current working directory
-- **Independent PySide6 windows** — Python plugins create their own Qt windows, fully separate from the Tauri UI
+- **PythonPluginBase** - new frontend base class for Python plugins with `onActivate()` (spawn) and `onDeactivate()` (kill)
+- **Python process management** - `launch_python_plugin`, `stop_python_plugin`, `list_python_plugins`, `is_python_plugin_running` Tauri commands with `HashMap<String, Child>` tracking
+- **Automatic Python discovery** - checks `python`, `python3`, `py`, common Windows install paths (`C:\Python3xx`, `AppData\Local\Programs\Python`)
+- **Script resolution** - finds plugin scripts in resource dir, CARGO_MANIFEST_DIR, or current working directory
+- **Independent PySide6 windows** - Python plugins create their own Qt windows, fully separate from the Tauri UI
 
 ### 🔬 Python OCR Plugin
 
 A new Python-powered OCR plugin (`OCR (Python)`) with advanced features:
 
 - **Standalone PySide6 window** with OCR image overlay
-- **Drag-select** — click and drag to select multiple words at once, blue selection rectangle
-- **Ctrl+toggle** — Ctrl+click or Ctrl+drag to toggle word selection (select if not selected, deselect if selected)
-- **Image View mode** — switch between raw text and image overlay with word bounding boxes
-- **Copy Selected** — copy only the words you manually selected
-- **Hover highlighting** — word-by-word hover with color-coded boxes (red for default, blue for selected)
+- **Drag-select** - click and drag to select multiple words at once, blue selection rectangle
+- **Ctrl+toggle** - Ctrl+click or Ctrl+drag to toggle word selection (select if not selected, deselect if selected)
+- **Image View mode** - switch between raw text and image overlay with word bounding boxes
+- **Copy Selected** - copy only the words you manually selected
+- **Hover highlighting** - word-by-word hover with color-coded boxes (red for default, blue for selected)
 
 ### 🧩 Plugin System Improvements
 
