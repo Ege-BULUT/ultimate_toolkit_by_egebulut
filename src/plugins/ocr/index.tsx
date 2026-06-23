@@ -340,7 +340,7 @@ export const OCRConfig: React.FC = () => {
 export const OCRFloating: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [result, setResult] = useState<string | null>(null);
   const [lang] = useState("eng");
-  const [engine, setEngine] = useState("tesseract");
+  const [engine] = useState("tesseract");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const ocrBase64 = async (base64: string, label: string) => {
