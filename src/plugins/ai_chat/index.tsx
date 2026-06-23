@@ -92,7 +92,8 @@ const KEY_HINTS: Record<string, { hint: string; url: string }> = {
 
 export const AIChatConfig: React.FC = () => {
   const [selectedProvider, setSelectedProvider] = useState("openai");
-  const [ollamaAvailable, setOllamaAvailable] = useState(false);
+  const [ollamaAvailable, setOllamaAvailable] = useState<boolean | null>(null);
+  const [checkingOllama, setCheckingOllama] = useState(false);
   const [ollamaModels, setOllamaModels] = useState<OllamaModel[]>([]);
   const { messages: chatMessages, addMessage: addChatMessage, clearHistory: clearChatHistory } =
     useConversation("ai_chat");
@@ -104,20 +105,40 @@ export const AIChatConfig: React.FC = () => {
   const config = loadProviderConfig(selectedProvider);
   const keyHint = KEY_HINTS[selectedProvider];
 
-  // Check Ollama on mount
-  useEffect(() => {
-    if (selectedProvider !== "ollama") return;
-    if (!isTauri()) return;
-
-    const check = async () => {
+  const checkOllama = async () => {
+    if (!isTauri()) {
+      setOllamaAvailable(false);
+      return;
+    }
+    setCheckingOllama(true);
+    try {
       const available = await tryInvoke<boolean>("check_ollama");
-      setOllamaAvailable(available ?? false);
-      if (available) {
+      const result = available ?? false;
+      setOllamaAvailable(result);
+      if (result) {
         const models = await tryInvoke<OllamaModel[]>("list_ollama_models");
         if (models) setOllamaModels(models);
       }
+    } finally {
+      setCheckingOllama(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedProvider !== "ollama") return;
+    if (ollamaAvailable !== null) return;
+    checkOllama();
+  }, [selectedProvider, ollamaAvailable]);
+
+  useEffect(() => {
+    if (selectedProvider !== "ollama") return;
+    const onVisible = () => { checkOllama(); };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
     };
-    check();
   }, [selectedProvider]);
 
   useEffect(() => {
@@ -223,7 +244,10 @@ export const AIChatConfig: React.FC = () => {
               color: "var(--color-text-secondary)",
             }}
           >
-            {ollamaAvailable ? (
+            {ollamaAvailable === null && (
+              <>🔄 Checking Ollama...</>
+            )}
+            {ollamaAvailable === true && (
               <>
                 ✅ Ollama is running!
                 {ollamaModels.length > 0 ? (
@@ -246,7 +270,8 @@ export const AIChatConfig: React.FC = () => {
                   </p>
                 )}
               </>
-            ) : (
+            )}
+            {ollamaAvailable === false && (
               <>
                 ❌ Ollama is not detected.
                 <br />
@@ -259,7 +284,21 @@ export const AIChatConfig: React.FC = () => {
                 >
                   ollama.com
                 </a>{" "}
-                and start the app.
+                and start the app, then click Check Again.
+                <div className="mt-2">
+                  <button
+                    onClick={checkOllama}
+                    disabled={checkingOllama}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                    style={{
+                      background: "var(--color-accent)",
+                      color: "#fff",
+                      opacity: checkingOllama ? 0.6 : 1,
+                    }}
+                  >
+                    {checkingOllama ? "Checking..." : "🔄 Check Again"}
+                  </button>
+                </div>
               </>
             )}
           </div>
