@@ -124,13 +124,21 @@ fn show_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
         tauri::WebviewUrl::App("/?toolbar".into()),
     )
     .title("Toolbar")
-    .inner_size(380.0, 64.0)
+    .inner_size(420.0, 64.0)
     .always_on_top(true)
     .decorations(false)
     .resizable(false);
 
     builder.build().map_err(|e| format!("Failed to create toolbar: {e}"))?;
 
+    Ok(())
+}
+
+#[tauri::command]
+fn hide_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
+    if let Some(win) = app.get_webview_window("floating-toolbar") {
+        win.close().map_err(|e| format!("Failed to close toolbar: {e}"))?;
+    }
     Ok(())
 }
 
@@ -197,7 +205,7 @@ async fn check_for_updates() -> Result<UpdateCheckResult, String> {
     }
 
     let release: Release = resp.json().await.map_err(|e| format!("Parse error: {e}"))?;
-    let current = "1.0.1";
+    let current = "1.0.2";
 
     Ok(UpdateCheckResult {
         available: release.tag_name.trim_start_matches('v') != current,
@@ -239,6 +247,7 @@ pub fn run() {
     create_floating_window,
             close_floating_window,
             show_floating_toolbar,
+            hide_floating_toolbar,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
