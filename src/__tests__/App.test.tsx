@@ -36,6 +36,6 @@ describe("App", () => {
 
   it("renders plugin manager with plugin count", () => {
     render(<App />);
-    expect(screen.getByText("2 installed")).toBeInTheDocument();
+    expect(screen.getByText("3 installed")).toBeInTheDocument();
   });
 });
