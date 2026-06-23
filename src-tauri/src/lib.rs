@@ -207,7 +207,7 @@ async fn check_for_updates() -> Result<UpdateCheckResult, String> {
     }
 
     let release: Release = resp.json().await.map_err(|e| format!("Parse error: {e}"))?;
-    let current = "1.0.2";
+    let current = env!("CARGO_PKG_VERSION");
 
     Ok(UpdateCheckResult {
         available: release.tag_name.trim_start_matches('v') != current,
