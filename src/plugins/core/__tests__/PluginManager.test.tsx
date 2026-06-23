@@ -119,7 +119,7 @@ describe("PluginManager", () => {
   it("renders CustomPluginLoader section", () => {
     PluginRegistry.register(new TestPlugin());
     renderManager();
-    expect(screen.getByText("Load Custom Plugin")).toBeTruthy();
+    expect(screen.getByText("Load from File")).toBeTruthy();
   });
 
   it("renders plugin grid layout", () => {
