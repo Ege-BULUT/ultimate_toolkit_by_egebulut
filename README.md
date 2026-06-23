@@ -88,26 +88,25 @@ You can also manually trigger a build from the Actions tab (`workflow_dispatch`)
 
 ```
 ultimate_toolkit_by_egebulut/
-â”œâ”€â”€ plugins/              # Python plugin scripts (PySide6 standalone)
-â”‚   â””â”€â”€ python/           #   ocr_plugin.py, more coming
-â”œâ”€â”€ src/                    # React frontend
-â”‚   â”œâ”€â”€ components/         # Reusable UI components
-â”‚   â”œâ”€â”€ hooks/              # React hooks (theme, settings, updates)
-â”‚   â”œâ”€â”€ plugins/            # Plugin system
-â”‚   â”‚   â”œâ”€â”€ core/           # PluginBase, Registry, FloatingWindow, PythonPluginBase
-â”‚   â”‚   â”œâ”€â”€ ocr/            # OCR plugin
-â”‚   â”‚   â”œâ”€â”€ ai_chat/        # AI Chat plugin
-â”‚   â”‚   â””â”€â”€ python_ocr/     # Python OCR plugin
-â”‚   â”œâ”€â”€ styles/             # CSS variables + globals
-â”‚   â”œâ”€â”€ types/              # TypeScript types
-â”‚   â””â”€â”€ utils/              # Storage, Tauri helpers
-â”œâ”€â”€ src-tauri/              # Rust backend
-â”‚   â””â”€â”€ src/plugins/        # Rust plugin implementations (ocr, ai_chat, python_plugin)
-â”œâ”€â”€ ultimate_toolkit_web/   # Landing page + docs SPA (Vercel)
-â”‚   â””â”€â”€ docs/               # Versioned docs content + search index
-â”œâ”€â”€ .github/workflows/      # CI + Release (auto .exe build)
-â”œâ”€â”€ PLAN.md                 # Architecture & plan
-â””â”€â”€ TODO.md                 # Task tracking
+├── plugins/              # Python plugin scripts
+│   └── python/           #   ocr_plugin.py, more coming
+├── src/                  # React frontend
+│   ├── components/
+│   ├── hooks/
+│   ├── plugins/
+│   │   ├── core/         # PluginBase, PythonPluginBase, Registry
+│   │   ├── ocr/
+│   │   ├── ai_chat/
+│   │   └── python_ocr/
+│   ├── styles/
+│   ├── types/
+│   └── utils/
+├── src-tauri/            # Rust backend
+│   └── src/plugins/      # ocr, ai_chat, python_plugin
+├── ultimate_toolkit_web/ # Landing page + docs (Vercel)
+├── .github/workflows/    # CI + Release
+├── PLAN.md
+└── TODO.md
 ```
 
 ---
