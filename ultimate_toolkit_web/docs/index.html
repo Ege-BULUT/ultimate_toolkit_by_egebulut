@@ -195,7 +195,7 @@
       <div class="nav-spacer"></div>
       <div class="nav-links">
         <a href="/">Home</a>
-        <a href="/docs/v1.0.0">Docs</a>
+        <a href="/docs/v1.0.1">Docs</a>
         <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut" target="_blank" rel="noopener">GitHub</a>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"><span id="themeIcon">&#9681;</span></button>
       </div>
@@ -277,7 +277,7 @@
     function loadSearchIndex() {
       if (searchIndex) return Promise.resolve(searchIndex);
       var info = parseDocURL();
-      var verPath = info.version || 'v1.0.0';
+      var verPath = info.version || 'v1.0.1';
       return fetch(CONTENT_BASE + '/' + verPath + '/search-index.json')
         .then(function(r) { return r.json(); })
         .then(function(data) { searchIndex = data; return data; })
