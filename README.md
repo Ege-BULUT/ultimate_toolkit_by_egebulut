@@ -5,11 +5,13 @@
 
 > Modular plugin architecture. Python plugin support. Community extensions. Beautiful dark/light themes.
 
+<a href="https://utoolkit.vercel.app/docs/" target="_blank"><img src="https://img.shields.io/badge/🌐_Docs-utoolkit.vercel.app-8B5CF6?style=for-the-badge" alt="Documentation" /></a>
+
 ---
 
-## âœ¨ Features
+## Features
 
-### ğŸ” **OCR**: Optical Character Recognition
+### **OCR**: Optical Character Recognition
 Extract text from images, screenshots, and screen regions using Tesseract OCR.
 - 15+ languages (English pre-installed)
 - Multi-language support
@@ -17,7 +19,7 @@ Extract text from images, screenshots, and screen regions using Tesseract OCR.
 - Screen capture integration
 - [Custom OCR engine guide](https://utoolkit.vercel.app/docs/custom-ocr)
 
-### ğŸ¤– **AI Chat**: Multi-Provider AI Assistant
+### **AI Chat**: Multi-Provider AI Assistant
 Chat with leading AI models, all from one floating window.
 - **Ollama** (local, auto-detected)
 - **OpenAI** (GPT-4o, GPT-4, GPT-3.5)
@@ -27,14 +29,14 @@ Chat with leading AI models, all from one floating window.
 - **DeepSeek** (DeepSeek Chat, Coder)
 - **HuggingFace** (Llama, Mixtral, and more)
 
-### ğŸ **Python Plugin Support** (v1.1.0+)
+### **Python Plugin Support** (v1.1.0+)
 Run Python scripts as native plugins with independent PySide6 windows.
 - **Standalone Python processes** - the app launches `python {script}` as a child process
 - **Automatic Python discovery** - finds Python on your system (common install paths)
 - **Built-in Python OCR** - image overlay, drag-select word picking, Ctrl+toggle
 - **Bring your own Python** - any PySide6 GUI script can be a plugin
 
-### ğŸ§© **Plugin System**
+### **Plugin System**
 - Toggle plugins on/off individually
 - Each plugin has its own configuration page
 - Floating window support for quick access
@@ -44,14 +46,14 @@ Run Python scripts as native plugins with independent PySide6 windows.
 - Write your own plugins! ([Guide](https://utoolkit.vercel.app/docs/custom-plugins))
 - Clone the [template branch](https://github.com/Ege-BULUT/ultimate_toolkit_by_egebulut/tree/template/example-plugin) for a boilerplate starter
 
-### âš™ï¸ **Smart Settings**
+### **Smart Settings**
 - Dark / Light / System theme
 - Auto-update checker
 - Per-plugin configuration
 
 ---
 
-## ğŸš€ Quick Start
+## Quick Start
 
 ### Prerequisites
 - Windows 10/11
@@ -82,7 +84,7 @@ You can also manually trigger a build from the Actions tab (`workflow_dispatch`)
 
 ---
 
-## ï¿½-ï¸ Project Structure
+## Project Structure
 
 ```
 ultimate_toolkit_by_egebulut/
@@ -110,7 +112,7 @@ ultimate_toolkit_by_egebulut/
 
 ---
 
-## ğŸ”§ Development
+## Development
 
 ```bash
 # Frontend dev (browser)
@@ -135,7 +137,7 @@ Release builds are triggered by pushing a `v*` tag - see `.github/workflows/rele
 
 ---
 
-## ğŸ¤ Contributing
+## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
@@ -143,13 +145,13 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ---
 
-## ğŸ“„ License
+## License
 
 MIT Â© [Ege Bulut](https://github.com/egebulut). See [LICENSE](./LICENSE).
 
 ---
 
-## ï¿½- Links
+## Links
 
 - [Website](https://utoolkit.vercel.app)
 - [GitHub](https://github.com/egebulut/ultimate_toolkit_by_egebulut)
