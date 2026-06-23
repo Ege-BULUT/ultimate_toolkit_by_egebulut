@@ -1,4 +1,5 @@
 ﻿# Ultimate Toolkit by EgeBulut 🛠️
+<a href="https://utoolkit.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/🌐_Website-utoolkit.vercel.app-8B5CF6?style=for-the-badge" alt="website" /></a>
 
 **A modern, open-source Windows utility toolkit**, inspired by Microsoft PowerToys, built with [Tauri](https://tauri.app) + [React](https://react.dev) + [Rust](https://www.rust-lang.org/).
 
