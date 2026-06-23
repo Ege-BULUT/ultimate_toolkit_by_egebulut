@@ -21,7 +21,7 @@ beforeEach(() => {
 describe("CustomPluginLoader", () => {
   it("renders the file picker button", () => {
     render(<CustomPluginLoader onPluginLoaded={() => {}} />);
-    expect(screen.getByText("Load Custom Plugin")).toBeTruthy();
+    expect(screen.getByText("Load from File")).toBeTruthy();
     expect(screen.getByText("Browse Files...")).toBeTruthy();
   });
 
