@@ -39,6 +39,8 @@ export const OCRConfig: React.FC = () => {
     { code: string; name: string; installed: boolean }[]
   >([]);
   const [selectedLang, setSelectedLang] = useState("eng");
+  const [engines, setEngines] = useState<{ id: string; name: string; available: boolean; description: string }[]>([]);
+  const [selectedEngine, setSelectedEngine] = useState("tesseract");
   const [downloading, setDownloading] = useState(false);
   const [ocrResult, setOcrResult] = useState<string | null>(null);
 
@@ -48,6 +50,11 @@ export const OCRConfig: React.FC = () => {
         "get_available_ocr_languages"
       ).then((langs) => {
         if (langs) setLanguages(langs);
+      });
+      tryInvoke<{ id: string; name: string; available: boolean; description: string }[]>(
+        "get_available_ocr_engines"
+      ).then((es) => {
+        if (es) setEngines(es);
       });
     }
   }, []);
@@ -110,7 +117,7 @@ export const OCRConfig: React.FC = () => {
           const base64 = canvas.toDataURL("image/png").split(",")[1] ?? "";
 
           setOcrResult("Processing clipboard image...");
-          const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang: selectedLang });
+          const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang: selectedLang, engine: selectedEngine });
           if (res && res.text) {
             setOcrResult(`📷 OCR Result (${Math.round(res.confidence * 100)}% confidence):\n\n${res.text}`);
           } else {
@@ -147,7 +154,7 @@ export const OCRConfig: React.FC = () => {
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
-      const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang: selectedLang });
+      const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang: selectedLang, engine: selectedEngine });
       if (res && res.text) {
         setOcrResult(`📁 OCR Result (${Math.round(res.confidence * 100)}% confidence):\n\n${res.text}`);
       } else {
@@ -161,6 +168,36 @@ export const OCRConfig: React.FC = () => {
 
   return (
     <div className="space-y-5">
+      {/* Engine Selection */}
+      <section>
+        <h3 className="text-sm font-semibold mb-2" style={{ color: "var(--color-text-primary)" }}>
+          OCR Engine
+        </h3>
+        <p className="text-xs mb-3" style={{ color: "var(--color-text-muted)" }}>
+          Choose the OCR engine. Tesseract is pre-installed; PaddleOCR can be installed separately for better accuracy on handwriting.
+        </p>
+        <div className="flex gap-2">
+          {engines.map((e) => (
+            <button
+              key={e.id}
+              onClick={() => setSelectedEngine(e.id)}
+              disabled={!e.available}
+              className="flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all"
+              style={{
+                background: selectedEngine === e.id ? "var(--color-accent)" : "var(--color-surface)",
+                color: selectedEngine === e.id ? "#fff" : (e.available ? "var(--color-text-primary)" : "var(--color-text-tertiary)"),
+                border: "1px solid var(--color-border)",
+                opacity: e.available ? 1 : 0.5,
+                cursor: e.available ? "pointer" : "not-allowed",
+              }}
+            >
+              <div className="font-medium">{e.name}</div>
+              <div className="mt-0.5 opacity-70">{e.available ? "✅ Available" : "❌ Not installed"}</div>
+            </button>
+          ))}
+        </div>
+      </section>
+
       {/* Language Selection */}
       <section>
         <h3 className="text-sm font-semibold mb-2" style={{ color: "var(--color-text-primary)" }}>
@@ -303,11 +340,12 @@ export const OCRConfig: React.FC = () => {
 export const OCRFloating: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [result, setResult] = useState<string | null>(null);
   const [lang] = useState("eng");
+  const [engine, setEngine] = useState("tesseract");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const ocrBase64 = async (base64: string, label: string) => {
     setResult(`Processing ${label}...`);
-    const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang });
+    const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang, engine });
     if (res && res.text) {
       setResult(`🔍 OCR Result (${Math.round(res.confidence * 100)}%):\n\n${res.text}`);
     } else {
