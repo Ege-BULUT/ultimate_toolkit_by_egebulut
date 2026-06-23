@@ -50,7 +50,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {/* Plugins section header */}
+        {/* All Plugins button - navigates back to main plugin manager */}
+        <button
+          onClick={() => onNavigate("plugins")}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
+          style={{
+            background: activePage === "plugins" ? "var(--color-surface-hover)" : "transparent",
+            color: activePage === "plugins" ? "var(--color-accent)" : "var(--color-text-primary)",
+          }}
+          onMouseEnter={(e) => {
+            if (activePage !== "plugins")
+              (e.currentTarget as HTMLElement).style.background = "var(--color-surface-hover)";
+          }}
+          onMouseLeave={(e) => {
+            if (activePage !== "plugins")
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+          }}
+        >
+          <span className="text-lg">🧩</span>
+          <span className="flex-1 text-left">All Plugins</span>
+        </button>
+
+        <div className="my-2 border-t" style={{ borderColor: "var(--color-border)" }} />
+
+        {/* Individual plugin items */}
         <p
           className="px-2 text-xs font-semibold uppercase tracking-wider mb-2"
           style={{ color: "var(--color-text-muted)" }}

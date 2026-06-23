@@ -226,13 +226,13 @@
       <a href="/" class="nav-logo"><div class="nav-logo-mark">UT</div><span>Ultimate Toolkit</span></a>
       <div class="nav-divider"></div>
       <div class="version-dropdown" id="versionDropdown">
-        <button class="version-btn" id="versionBtn">v1.1.0 <span class="vdd-arrow">▾</span></button>
+        <button class="version-btn" id="versionBtn">v1.1.1 <span class="vdd-arrow">▾</span></button>
         <div class="version-menu" id="versionMenu"></div>
       </div>
       <div class="nav-spacer"></div>
       <div class="nav-links">
         <a href="/">Home</a>
-        <a href="/docs/v1.1.0">Docs</a>
+        <a href="/docs/v1.1.1">Docs</a>
         <a href="https://github.com/egebulut/ultimate_toolkit_by_egebulut" target="_blank" rel="noopener">GitHub</a>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"><span id="themeIcon">&#9681;</span></button>
       </div>
@@ -267,11 +267,12 @@
     const CONTENT_BASE = '/docs/content';
     let manifest = null;
     let searchIndex = null;
-    let currentVersion = 'v1.1.0';
+    let currentVersion = 'v1.1.1';
     let currentCategory = null;
     let currentPage = null;
     const VERSIONS = [
-      { id: 'v1.1.0', label: 'v1.1.0', badge: 'Latest', archived: false },
+      { id: 'v1.1.1', label: 'v1.1.1', badge: 'Latest', archived: false },
+      { id: 'v1.1.0', label: 'v1.1.0', badge: '', archived: false },
       { id: 'v1.0.2', label: 'v1.0.2', badge: '', archived: false },
       { id: 'v1.0.1', label: 'v1.0.1', badge: '', archived: false },
       { id: 'v1.0.0', label: 'v1.0.0', badge: '', archived: false },
@@ -355,7 +356,7 @@
     function loadSearchIndex() {
       if (searchIndex) return Promise.resolve(searchIndex);
       var info = parseDocURL();
-    var verPath = info.version || 'v1.1.0';
+    var verPath = info.version || 'v1.1.1';
     return fetch(CONTENT_BASE + '/' + verPath + '/search-index.json')
         .then(function(r) { return r.json(); })
         .then(function(data) { searchIndex = data; return data; })

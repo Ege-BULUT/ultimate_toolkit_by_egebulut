@@ -5,16 +5,21 @@ import FloatingApp from "./floating/FloatingApp";
 import FloatingToolbar from "./floating/FloatingToolbar";
 import "./styles/globals.css";
 
+// Init logger so console interception works from startup
+import "./hooks/useLogger";
+
 const params = new URLSearchParams(window.location.search);
 const floatingMode = params.get("floating");
 const toolbarMode = params.has("toolbar");
+
+console.log("App started, mode:", floatingMode ? "floating-" + floatingMode : toolbarMode ? "toolbar" : "main");
 
 function Root() {
   if (floatingMode) {
     return <FloatingApp pluginId={floatingMode} />;
   }
   if (toolbarMode) {
-    return <FloatingToolbar onToggle={() => {}} />;
+    return <FloatingToolbar />;
   }
   return <App />;
 }
