@@ -158,3 +158,14 @@
 5. **#4** Code signing certificate (Windows SmartScreen)
 6. **#5** Tauri updater JSON automation
 7. **#21** Plugin hot-reload (dev mode)
+
+---
+
+## ✅ v1.0.2 Bug Fixes (Current Release)
+
+| # | Fix | Files Changed |
+|---|-----|---------------|
+| F1 | Floating toolbar: button refs fixed (both clickable), close button + Escape key added | `lib.rs`, `FloatingToolbar.tsx` |
+| F2 | Floating buttons removed from main App (now in toolbar window) | `App.tsx` |
+| F3 | Ollama detection: "Check Again" button + visibility/focus auto-retry | `ai_chat/index.tsx` |
+| F4 | OCR clipboard: image paste (readImage → canvas → PNG → perform_ocr) + file upload | `ocr/index.tsx` |
