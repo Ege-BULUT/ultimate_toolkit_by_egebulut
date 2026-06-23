@@ -530,7 +530,7 @@
         var md = await res.text();
         var html = renderMarkdown(md);
         var meta = getPageMeta(info.category, info.page);
-        if (meta) document.title = meta.page.title + ' \u2014 Ultimate Toolkit';
+        if (meta) document.title = meta.page.title + ' - Ultimate Toolkit';
         contentEl.innerHTML = html;
 
         contentEl.querySelectorAll('h2, h3').forEach(function(heading) {
@@ -555,7 +555,7 @@
         }
       } catch (err) {
         contentEl.innerHTML = '<div class="content-error"><h2>Page Not Found</h2><p>The page you are looking for does not exist in this version of the documentation.</p><p style="margin-top:12px"><a href="/docs/' + info.version + '">Go to Docs Home</a></p></div>';
-        document.title = 'Not Found \u2014 Ultimate Toolkit';
+        document.title = 'Not Found - Ultimate Toolkit';
       }
     }
 
