@@ -1,6 +1,7 @@
 mod plugins;
 
-use plugins::{ai_chat, ocr};
+use plugins::{ai_chat, ocr, python_plugin};
+use python_plugin::PythonPluginState;
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use tauri::{Manager, State};
@@ -232,6 +233,7 @@ pub fn run() {
                 PluginToggle { id: "ai_chat".to_string(), active: false },
             ]),
         })
+        .manage(PythonPluginState::new())
         .invoke_handler(tauri::generate_handler![
             ocr::perform_ocr,
             ocr::get_available_ocr_languages,
@@ -240,6 +242,11 @@ pub fn run() {
             ai_chat::chat_completion,
             ai_chat::check_ollama,
             ai_chat::list_ollama_models,
+            python_plugin::launch_python_plugin,
+            python_plugin::stop_python_plugin,
+            python_plugin::list_python_plugins,
+            python_plugin::is_python_plugin_running,
+            python_plugin::get_python_plugin_path,
             get_settings,
             set_theme,
             set_auto_update,

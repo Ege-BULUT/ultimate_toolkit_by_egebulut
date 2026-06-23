@@ -5,6 +5,7 @@ import { SettingsPanel } from "./components/SettingsPanel";
 import { PluginRegistry } from "./plugins/core/PluginRegistry";
 import { OCRPlugin } from "./plugins/ocr";
 import { AIChatPlugin } from "./plugins/ai_chat";
+import { PythonOCRPlugin, PythonOCRConfig } from "./plugins/python_ocr";
 import { useTheme } from "./hooks/useTheme";
 import { useSettings } from "./hooks/useSettings";
 import { useAutoUpdate } from "./hooks/useAutoUpdate";
@@ -18,10 +19,12 @@ import { isTauri } from "./utils/tauri";
 
 PluginRegistry.register(new OCRPlugin());
 PluginRegistry.register(new AIChatPlugin());
+PluginRegistry.register(new PythonOCRPlugin());
 
 const PLUGIN_CONFIGS: Record<string, React.FC> = {
   ocr: OCRConfig,
   ai_chat: AIChatConfig,
+  "python-ocr": PythonOCRConfig,
 };
 
 const App: React.FC = () => {

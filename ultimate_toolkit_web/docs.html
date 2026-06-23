@@ -272,7 +272,7 @@ https://github.com/tesseract-ocr/tessdata_fast/</code></pre>
       <h2>Custom Plugin Guide</h2>
       <p>Anyone can build a plugin for Ultimate Toolkit. Here's how:</p>
 
-      <h3>Plugin Structure</h3>
+      <h3>JavaScript/TypeScript Plugins</h3>
       <p>Each plugin lives in <code>src/plugins/&lt;name&gt;/</code> and consists of:</p>
       <ol>
         <li>A <strong>PluginDefinition</strong> - metadata (id, name, icon, etc.)</li>
@@ -322,6 +322,22 @@ pub fn hello_world(name: String) -> String {
     format!("Hello, {}! From Rust!", name)
 }</code></pre>
       <p>Then register the command in <code>lib.rs</code> and call it from frontend with <code>invoke("hello_world", { name: "World" })</code>.</p>
+
+      <h3>Python Plugins (v1.1.0+)</h3>
+      <p>You can also run Python scripts as native plugins. The app launches them as child processes and manages their lifecycle. Each Python plugin runs in its own PySide6 window.</p>
+      <pre><code>// src/plugins/my_python_plugin/index.tsx
+import { PythonPluginBase } from "../core/PythonPluginBase";
+
+export class MyPythonPlugin extends PythonPluginBase {
+  definition = { id: "my-python-plugin", name: "My Python Plugin",
+    description: "Python-powered plugin", icon: "🐍",
+    version: "0.1.0", author: "You", hasFloatingUI: false };
+  pythonPluginId = "my_script"; // matches plugins/python/my_script.py
+}</code></pre>
+
+      <div class="note">
+        <strong>Requirements:</strong> Python 3.10+, PySide6, Pillow. The Python script must create its own <code>QApplication</code> and window.
+      </div>
 
       <div class="note">
         <strong>Plugin SDK coming soon!</strong> We're working on a CLI tool (<code>utoolkit create-plugin</code>) that generates the full scaffold.
