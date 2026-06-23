@@ -233,6 +233,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             ocr::perform_ocr,
             ocr::get_available_ocr_languages,
+            ocr::get_available_ocr_engines,
             ocr::download_language_data,
             ai_chat::chat_completion,
             ai_chat::check_ollama,
