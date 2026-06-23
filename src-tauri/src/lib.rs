@@ -92,10 +92,13 @@ fn create_floating_window(app: tauri::AppHandle, plugin_id: String) -> Result<()
         &label,
         tauri::WebviewUrl::App(format!("/?floating={plugin_id}").into()),
     )
-    .title("Ultimate Toolkit")
+    .title(match plugin_id.as_str() {
+        "ocr" => "OCR - Ultimate Toolkit",
+        "ai_chat" => "AI Chat - Ultimate Toolkit",
+        _ => "Plugin - Ultimate Toolkit",
+    })
     .inner_size(w, h)
     .always_on_top(true)
-    .decorations(false)
     .resizable(true);
 
     builder.build().map_err(|e| format!("Failed to create window: {e}"))?;
@@ -123,10 +126,9 @@ fn show_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
         "floating-toolbar",
         tauri::WebviewUrl::App("/?toolbar".into()),
     )
-    .title("Toolbar")
+    .title("Ultimate Toolkit Tools")
     .inner_size(420.0, 64.0)
     .always_on_top(true)
-    .decorations(false)
     .resizable(false);
 
     builder.build().map_err(|e| format!("Failed to create toolbar: {e}"))?;

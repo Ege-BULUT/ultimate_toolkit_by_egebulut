@@ -42,9 +42,14 @@ fn ollama_base_url() -> String {
 #[tauri::command]
 pub async fn check_ollama() -> Result<bool, String> {
     let url = format!("{}/api/tags", ollama_base_url());
-    let client = reqwest::Client::new();
-    let resp = client.get(&url).timeout(std::time::Duration::from_secs(3)).send().await;
-    Ok(resp.is_ok() && resp.unwrap().status().is_success())
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(5))
+        .build()
+        .map_err(|e| format!("Failed to create HTTP client: {}", e))?;
+    match client.get(&url).send().await {
+        Ok(resp) => Ok(resp.status().is_success()),
+        Err(e) => Err(format!("Ollama connection failed: {}", e)),
+    }
 }
 
 /// List Ollama models
