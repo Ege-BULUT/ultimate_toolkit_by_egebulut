@@ -3,7 +3,6 @@ import { Sidebar, type Page } from "./components/Sidebar";
 import { PluginManager } from "./plugins/core/PluginManager";
 import { SettingsPanel } from "./components/SettingsPanel";
 import { PluginRegistry } from "./plugins/core/PluginRegistry";
-import { FloatingButton } from "./components/FloatingButton";
 import { OCRPlugin } from "./plugins/ocr";
 import { AIChatPlugin } from "./plugins/ai_chat";
 import { useTheme } from "./hooks/useTheme";
@@ -244,36 +243,6 @@ const App: React.FC = () => {
     return elements;
   };
 
-  // ── Render floating buttons for inactive floating plugins ─
-  const renderFloatingButtons = () => {
-    const elements: React.ReactNode[] = [];
-
-    if (activePlugins.has("ocr") && !floatingUIs.has("ocr")) {
-      elements.push(
-        <FloatingButton
-          key="ocr-fab"
-          icon="🔍"
-          tooltip="Open OCR"
-          onClick={() => handleToggleFloating("ocr")}
-        />
-      );
-    }
-
-    if (activePlugins.has("ai_chat") && !floatingUIs.has("ai_chat")) {
-      elements.push(
-        <FloatingButton
-          key="ai-chat-fab"
-          icon="🤖"
-          tooltip="Open AI Chat"
-          onClick={() => handleToggleFloating("ai_chat")}
-          position={{ x: window.innerWidth - 80, y: window.innerHeight / 2 + 80 }}
-        />
-      );
-    }
-
-    return elements;
-  };
-
   return (
     <div className="flex h-screen w-screen overflow-hidden">
       {/* Sidebar */}
@@ -292,8 +261,7 @@ const App: React.FC = () => {
       {/* Floating Windows */}
       {renderFloatingUIs()}
 
-      {/* Floating Buttons */}
-      {renderFloatingButtons()}
+      {/* Floating Buttons — moved to FloatingToolbar window */}
 
       {/* Welcome / Onboarding — shows only on first visit */}
       <Welcome onDismiss={() => {}} />

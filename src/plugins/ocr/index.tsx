@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { PluginBase } from "../core/PluginBase";
 import type { PluginDefinition } from "../../types";
 import { isTauri, tryInvoke } from "../../utils/tauri";
@@ -95,16 +95,68 @@ export const OCRConfig: React.FC = () => {
     }
 
     try {
+      const { readImage } = await import("@tauri-apps/plugin-clipboard-manager");
+      try {
+        const img = await readImage();
+        if (img) {
+          const rgba = await img.rgba();
+          const size = await img.size();
+          const canvas = document.createElement("canvas");
+          canvas.width = size.width;
+          canvas.height = size.height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) { setOcrResult("Failed to create canvas context"); return; }
+          ctx.putImageData(new ImageData(new Uint8ClampedArray(rgba), size.width, size.height), 0, 0);
+          const base64 = canvas.toDataURL("image/png").split(",")[1] ?? "";
+
+          setOcrResult("Processing clipboard image...");
+          const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang: selectedLang });
+          if (res && res.text) {
+            setOcrResult(`📷 OCR Result (${Math.round(res.confidence * 100)}% confidence):\n\n${res.text}`);
+          } else {
+            setOcrResult("No text found in the clipboard image.");
+          }
+          return;
+        }
+      } catch {
+      }
       const { readText } = await import("@tauri-apps/plugin-clipboard-manager");
       const text = await readText();
       if (text) {
         setOcrResult(`📋 Clipboard text:\n\n${text}`);
       } else {
-        setOcrResult("Clipboard is empty or contains an image.\nTry pasting a screenshot (Win+Shift+S → Ctrl+V).");
+        setOcrResult("Clipboard is empty. Copy an image (Win+Shift+S) or text first, then click Paste & OCR.");
       }
     } catch (err) {
       setOcrResult(`Clipboard error: ${err}`);
     }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setOcrResult("Processing uploaded file...");
+    try {
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result;
+          if (typeof result === "string") { resolve(result.split(",")[1] ?? ""); }
+          else { reject(new Error("Failed to read file as data URL")); }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang: selectedLang });
+      if (res && res.text) {
+        setOcrResult(`📁 OCR Result (${Math.round(res.confidence * 100)}% confidence):\n\n${res.text}`);
+      } else {
+        setOcrResult("No text found in the uploaded image.");
+      }
+    } catch (err) {
+      setOcrResult(`File error: ${err}`);
+    }
+    e.target.value = "";
   };
 
   return (
@@ -178,6 +230,19 @@ export const OCRConfig: React.FC = () => {
               📋 Paste & OCR
             </button>
           </Tooltip>
+          <Tooltip text="Upload an image file for OCR">
+            <label
+              className="flex-1 px-4 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer text-center"
+              style={{
+                background: "var(--color-surface-hover)",
+                color: "var(--color-text-primary)",
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              📁 Upload Image
+              <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+            </label>
+          </Tooltip>
           <Tooltip text="Capture a screen region for OCR">
             <button
               onClick={handleCaptureAndOCR}
@@ -237,23 +302,59 @@ export const OCRConfig: React.FC = () => {
 
 export const OCRFloating: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [result, setResult] = useState<string | null>(null);
+  const [lang] = useState("eng");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const ocrBase64 = async (base64: string, label: string) => {
+    setResult(`Processing ${label}...`);
+    const res = await tryInvoke<{ text: string; confidence: number }>("perform_ocr", { imageBase64: base64, lang });
+    if (res && res.text) {
+      setResult(`🔍 OCR Result (${Math.round(res.confidence * 100)}%):\n\n${res.text}`);
+    } else {
+      setResult("No text found in the image.");
+    }
+  };
 
   const handlePaste = async () => {
-    if (!isTauri()) {
-      setResult("OCR is only available in the desktop app.");
-      return;
-    }
+    if (!isTauri()) { setResult("OCR is only available in the desktop app."); return; }
     try {
-      const { readText } = await import("@tauri-apps/plugin-clipboard-manager");
+      const { readImage, readText } = await import("@tauri-apps/plugin-clipboard-manager");
+      try {
+        const img = await readImage();
+        if (img) {
+          const rgba = await img.rgba();
+          const size = await img.size();
+          const canvas = document.createElement("canvas");
+          canvas.width = size.width; canvas.height = size.height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) { setResult("Failed to create canvas context"); return; }
+          ctx.putImageData(new ImageData(new Uint8ClampedArray(rgba), size.width, size.height), 0, 0);
+          const base64 = canvas.toDataURL("image/png").split(",")[1] ?? "";
+          await ocrBase64(base64, "clipboard image");
+          return;
+        }
+      } catch { /* no image */ }
       const text = await readText();
-      if (text) {
-        setResult(`📋 Clipboard text:\n\n${text}`);
-      } else {
-        setResult("No text in clipboard. Take a screenshot (Win+Shift+S) and copy it first.");
-      }
-    } catch (err) {
-      setResult(`Error: ${err}`);
-    }
+      if (text) { setResult(`📋 Clipboard text:\n\n${text}`); }
+      else { setResult("Clipboard is empty. Copy an image (Win+Shift+S) first."); }
+    } catch (err) { setResult(`Error: ${err}`); }
+  };
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result;
+        if (typeof result === "string") { resolve(result.split(",")[1] ?? ""); }
+        else { reject(new Error("Failed to read file as data URL")); }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    await ocrBase64(base64, "uploaded file");
+    e.target.value = "";
   };
 
   return (
@@ -269,6 +370,17 @@ export const OCRFloating: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         >
           📋 Paste from Clipboard & OCR
         </button>
+        <label
+          className="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer text-center"
+          style={{
+            background: "var(--color-surface-hover)",
+            color: "var(--color-text-primary)",
+            border: "1px solid var(--color-border)",
+          }}
+        >
+          📁 Upload Image
+          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+        </label>
         {result && (
           <pre
             className="flex-1 p-3 rounded-lg text-xs font-mono whitespace-pre-wrap overflow-auto"
