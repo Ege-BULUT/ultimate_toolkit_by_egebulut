@@ -5,10 +5,10 @@ import { isTauri } from "../../utils/tauri";
 
 const pluginDefinition: PluginDefinition = {
   id: "python-ocr",
-  name: "OCR (Python)",
+  name: "OCR",
   description:
     "Python-powered OCR with image overlay, drag-select word picking, and Ctrl+toggle. Requires Python + PySide6 + pytesseract.",
-  icon: "🐍",
+  icon: "🔍",
   version: "0.1.0",
   author: "Ege Bulut",
   hasFloatingUI: false,

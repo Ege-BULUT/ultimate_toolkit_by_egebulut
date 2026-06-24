@@ -29,7 +29,7 @@ describe("App", () => {
   it("shows OCR and AI Chat in sidebar and plugin cards", () => {
     render(<App />);
     const ocrElements = screen.getAllByText("OCR");
-    expect(ocrElements.length).toBe(2);
+    expect(ocrElements.length).toBe(4);
     const aiChatElements = screen.getAllByText("AI Chat");
     expect(aiChatElements.length).toBe(2);
   });
