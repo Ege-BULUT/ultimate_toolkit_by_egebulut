@@ -33,6 +33,18 @@ jobs:
           toolchain: stable
           cache: true
 
+      - name: Cache Rust target directory
+        uses: actions/cache@v4
+        with:
+          path: |
+            src-tauri/target/release/.fingerprint
+            src-tauri/target/release/build
+            src-tauri/target/release/deps
+            src-tauri/target/release/.cargo-lock
+          key: ${{ runner.os }}-tauri-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-tauri-target-
+
       - name: Build frontend
         run: npm run build
 
