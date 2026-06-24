@@ -10,6 +10,8 @@ export abstract class PythonPluginBase extends PluginBase {
   abstract pythonPluginId: string;
 
   async onActivate(): Promise<void> {
+    console.log(`Python plugin "${this.definition.id}" onActivate called`);
+    console.log("isTauri:", isTauri());
     if (!isTauri()) {
       console.warn(`${this.definition.id}: Python plugins require the Tauri desktop app`);
       return;
@@ -17,10 +19,10 @@ export abstract class PythonPluginBase extends PluginBase {
     try {
       const { invoke } = await import("@tauri-apps/api/core");
 
-      // Resolve the script path from the backend
       const scriptPath: string = await invoke("get_python_plugin_path", {
         pluginId: this.pythonPluginId,
       });
+      console.log(`Python plugin script resolved: ${scriptPath}`);
 
       await invoke("launch_python_plugin", {
         id: this.pythonPluginId,
@@ -34,6 +36,7 @@ export abstract class PythonPluginBase extends PluginBase {
   }
 
   async onDeactivate(): Promise<void> {
+    console.log(`Python plugin "${this.definition.id}" onDeactivate called`);
     if (!isTauri()) return;
     try {
       const { invoke } = await import("@tauri-apps/api/core");

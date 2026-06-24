@@ -37,12 +37,19 @@ const App: React.FC = () => {
 
   // Spawn the always-on-top floating toolbar on app start (Tauri only)
   useEffect(() => {
+    console.log("App mounted, isTauri:", isTauri());
+    console.log("Active page:", activePage);
+    console.log("Registered plugins:", PluginRegistry.getAllDefinitions().map(d => d.id).join(", "));
     if (isTauri()) {
       (async () => {
         try {
           const { invoke } = await import("@tauri-apps/api/core");
+          console.log("Showing floating toolbar...");
           await invoke("show_floating_toolbar");
-        } catch {}
+          console.log("Floating toolbar shown");
+        } catch (err) {
+          console.error("Failed to show floating toolbar:", err);
+        }
       })();
     }
   }, []);
@@ -63,25 +70,33 @@ const App: React.FC = () => {
 
   const handleTogglePlugin = useCallback(
     (id: string, active: boolean) => {
+      console.log("Toggle plugin:", id, active);
       togglePlugin(id, active);
     },
     [togglePlugin]
   );
 
   const handleOpenPlugin = useCallback((id: string) => {
+    console.log("Navigate to plugin:", id);
     setActivePage(id);
   }, []);
 
   const handleToggleFloating = useCallback((id: string) => {
+    console.log("Open floating window for:", id);
     if (isTauri()) {
       import("@tauri-apps/api/core").then((mod) => {
-        mod.invoke("create_floating_window", { pluginId: id }).catch(() => {});
+        mod.invoke("create_floating_window", { pluginId: id }).then(() => {
+          console.log("Floating window created for:", id);
+        }).catch((err) => {
+          console.error("Floating window error for", id, ":", err);
+        });
       });
     }
   }, []);
 
   const handleThemeChange = useCallback(
     (t: Theme) => {
+      console.log("Theme change:", t);
       setTheme(t);
     },
     [setTheme]

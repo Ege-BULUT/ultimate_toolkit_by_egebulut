@@ -24,25 +24,28 @@ export const PythonOCRConfig: React.FC = () => {
   const [pythonFound, setPythonFound] = useState<boolean | null>(null);
 
   useEffect(() => {
+    console.log("PythonOCRConfig mounted, isTauri:", isTauri());
     if (isTauri()) {
       import("@tauri-apps/api/core").then(({ invoke }) => {
         invoke<boolean>("is_python_plugin_running", { id: "ocr_plugin" })
-          .then((r) => setRunning(r))
-          .catch(() => {});
+          .then((r) => { console.log("Python OCR running status:", r); setRunning(r); })
+          .catch((err) => { console.error("Failed to check python plugin status:", err); });
       });
     }
   }, []);
 
   const handleLaunch = async () => {
-    if (!isTauri()) return;
+    if (!isTauri()) { console.warn("Python OCR: not in Tauri mode"); return; }
     try {
       const { invoke } = await import("@tauri-apps/api/core");
+      console.log("Launching Python OCR...");
       await invoke("launch_python_plugin", { id: "ocr_plugin" });
+      console.log("Python OCR launched successfully");
       setRunning(true);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
+      console.error("Python OCR launch failed:", msg);
       setPythonFound(msg.includes("Python not found") ? false : null);
-      console.error("Launch failed:", msg);
     }
   };
 
@@ -50,10 +53,12 @@ export const PythonOCRConfig: React.FC = () => {
     if (!isTauri()) return;
     try {
       const { invoke } = await import("@tauri-apps/api/core");
+      console.log("Stopping Python OCR...");
       await invoke("stop_python_plugin", { id: "ocr_plugin" });
+      console.log("Python OCR stopped");
       setRunning(false);
     } catch (err) {
-      console.error("Stop failed:", err);
+      console.error("Python OCR stop failed:", err);
     }
   };
 

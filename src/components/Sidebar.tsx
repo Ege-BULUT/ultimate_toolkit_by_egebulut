@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               Ultimate Toolkit
             </h1>
             <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
-              v0.1.0
+              v1.1.2
             </p>
           </div>
         </div>

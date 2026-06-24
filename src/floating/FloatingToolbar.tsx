@@ -7,37 +7,51 @@ const TOOLBAR_BUTTONS = [
 ];
 
 let invokeFn: ((cmd: string, args?: Record<string, unknown>) => Promise<unknown>) | null = null;
-// Load invoke once at module level
 if (isTauri()) {
-  import("@tauri-apps/api/core").then((mod) => { invokeFn = mod.invoke; }).catch(() => {});
+  import("@tauri-apps/api/core").then((mod) => {
+    invokeFn = mod.invoke;
+    console.log("Toolbar: invoke loaded");
+  }).catch((err) => {
+    console.error("Toolbar: failed to load invoke:", err);
+  });
 }
 
 const FloatingToolbar: React.FC = () => {
   const toolbarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log("Toolbar mounted, isTauri:", isTauri());
+    console.log("Toolbar: invokeFn available:", !!invokeFn);
     document.documentElement.style.setProperty("background", "transparent");
     document.body.style.setProperty("background", "transparent");
   }, []);
 
   const handleClick = (pluginId: string) => {
+    console.log("Toolbar button clicked:", pluginId);
     if (invokeFn) {
-      invokeFn("create_floating_window", { pluginId }).catch((err) => {
-        console.warn("Floating window error:", err);
+      invokeFn("create_floating_window", { pluginId }).then(() => {
+        console.log("Toolbar: floating window created for", pluginId);
+      }).catch((err) => {
+        console.error("Toolbar: floating window error for", pluginId, ":", err);
       });
+    } else {
+      console.error("Toolbar: invokeFn not loaded yet");
     }
   };
 
   const handleClose = () => {
+    console.log("Toolbar close clicked");
     if (invokeFn) {
-      invokeFn("hide_floating_toolbar").catch((err) => {
-        console.warn("Failed to close toolbar:", err);
+      invokeFn("hide_floating_toolbar").then(() => {
+        console.log("Toolbar closed");
+      }).catch((err) => {
+        console.error("Toolbar close failed:", err);
       });
     }
   };
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") { console.log("Toolbar: Escape pressed"); handleClose(); } };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);

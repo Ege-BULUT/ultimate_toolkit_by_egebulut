@@ -128,9 +128,10 @@ fn show_floating_toolbar(app: tauri::AppHandle) -> Result<(), String> {
         tauri::WebviewUrl::App("/?toolbar".into()),
     )
     .title("Ultimate Toolkit Tools")
-    .inner_size(420.0, 64.0)
+    .inner_size(420.0, 100.0)
     .always_on_top(true)
-    .resizable(false);
+    .resizable(false)
+    .decorations(false);
 
     builder.build().map_err(|e| format!("Failed to create toolbar: {e}"))?;
 

@@ -20,7 +20,7 @@ describe("Sidebar", () => {
     );
 
     expect(screen.getByText("Ultimate Toolkit")).toBeInTheDocument();
-    expect(screen.getByText("v0.1.0")).toBeInTheDocument();
+    expect(screen.getByText("v1.1.2")).toBeInTheDocument();
   });
 
   it("renders plugin list", () => {

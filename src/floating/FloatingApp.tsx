@@ -9,21 +9,28 @@ const FloatingApp: React.FC<FloatingAppProps> = ({ pluginId }) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    console.log("FloatingApp mounted, pluginId:", pluginId);
     const load = async () => {
       try {
         let mod: any;
         switch (pluginId) {
           case "ocr":
+            console.log("Loading OCR floating component...");
             mod = await import("../plugins/ocr");
             setComponent(() => mod.OCRFloating);
+            console.log("OCR floating component loaded");
             break;
           case "ai_chat":
+            console.log("Loading AIChat floating component...");
             mod = await import("../plugins/ai_chat");
             setComponent(() => mod.AIChatFloating);
+            console.log("AIChat floating component loaded");
             break;
+          default:
+            console.warn("Unknown floating pluginId:", pluginId);
         }
       } catch (err) {
-        console.error("FloatingApp load error:", err);
+        console.error("FloatingApp load error for", pluginId, ":", err);
       } finally {
         setLoaded(true);
       }
@@ -32,8 +39,13 @@ const FloatingApp: React.FC<FloatingAppProps> = ({ pluginId }) => {
   }, [pluginId]);
 
   const handleClose = () => {
+    console.log("Closing floating window for:", pluginId);
     import("@tauri-apps/api/core").then((mod) => {
-      mod.invoke("close_floating_window", { pluginId }).catch(() => {});
+      mod.invoke("close_floating_window", { pluginId }).then(() => {
+        console.log("Floating window closed for:", pluginId);
+      }).catch((err) => {
+        console.error("Failed to close floating window:", err);
+      });
     });
   };
 
